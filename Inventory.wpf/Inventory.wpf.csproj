@@ -8,12 +8,17 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Folder Include="ValueConverters\" />
-    <Folder Include="Styles\" />
+    <None Remove="Fonts\fontawesome-webfont.ttf" />
   </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\Inventory.Core\Inventory.Core.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Resource Include="Fonts\fontawesome-webfont.ttf">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </Resource>
   </ItemGroup>
 
 </Project>
