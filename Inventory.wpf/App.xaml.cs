@@ -1,0 +1,38 @@
+﻿using Inventory.Core.Services;
+using Inventory.Core.Stores;
+using Inventory.Core.ViewModels;
+using System;
+using System.Collections.Generic;
+using System.Configuration;
+using System.Data;
+using System.Linq;
+using System.Threading.Tasks;
+using System.Windows;
+
+namespace Inventory.wpf
+{
+    /// <summary>
+    /// Interaction logic for App.xaml
+    /// </summary>
+    public partial class App : Application
+    {
+        protected override void OnStartup(StartupEventArgs e)
+        {
+            NavigationStore navigationStore = new NavigationStore();
+            NavigationService navigationService = new NavigationService(navigationStore, navService => new NavigationBarViewModel(navService));
+            MainViewModel mainViewModel = new MainViewModel(navigationStore);
+
+            HomeViewModel homeViewModel = new HomeViewModel(navigationService);
+            navigationService.Navigate(() => homeViewModel);
+
+            MainWindow = new MainWindow()
+            {
+                DataContext = mainViewModel
+            };
+            MainWindow.Show();
+
+
+            base.OnStartup(e);
+        }
+    }
+}
