@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace Inventory.Core.Stores
 {
-    public class NavigationStore
+    public class ModalNavigationStore
     {
         private BaseViewModel? _CurrentViewModel;
 
@@ -21,11 +21,18 @@ namespace Inventory.Core.Stores
             }
         }
 
+        public bool IsOpen => CurrentViewModel != null;
+
         public event Action? CurrentViewModelChanged;
 
         private void OnCurrentViewModelChanged()
         {
             CurrentViewModelChanged?.Invoke();
+        }
+
+        private void Close()
+        {
+            CurrentViewModel = null;
         }
     }
 }

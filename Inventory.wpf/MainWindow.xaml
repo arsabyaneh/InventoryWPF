@@ -6,6 +6,7 @@
         xmlns:base="clr-namespace:Inventory.wpf"
         xmlns:views="clr-namespace:Inventory.wpf.Views"
         xmlns:viewmodels="clr-namespace:Inventory.Core.ViewModels;assembly=Inventory.Core"
+        xmlns:controls="clr-namespace:Inventory.wpf.Controls"
         mc:Ignorable="d"
         Title="Inventory Software" Height="650" Width="1000" WindowStartupLocation="CenterScreen">
     <Grid>
@@ -16,8 +17,15 @@
             <DataTemplate DataType="{x:Type viewmodels:HomeViewModel}">
                 <views:HomeView/>
             </DataTemplate>
+            <DataTemplate DataType="{x:Type viewmodels:AddNewItemViewModel}">
+                <views:AddNewItemView/>
+            </DataTemplate>
         </Grid.Resources>
 
+        <controls:Modal Panel.ZIndex="1" IsOpen="{Binding IsOpen}" Background="White">
+            <ContentControl Content="{Binding CurrentModalViewModel}"/>
+        </controls:Modal>
+        
         <ContentControl Content="{Binding CurrentViewModel}"/>
     </Grid>
 </Window>

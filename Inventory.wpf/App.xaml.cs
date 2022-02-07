@@ -19,10 +19,12 @@ namespace Inventory.wpf
         protected override void OnStartup(StartupEventArgs e)
         {
             NavigationStore navigationStore = new NavigationStore();
+            ModalNavigationStore modalNavigationStore = new ModalNavigationStore();
             NavigationService navigationService = new NavigationService(navigationStore, navService => new NavigationBarViewModel(navService));
-            MainViewModel mainViewModel = new MainViewModel(navigationStore);
+            ModalNavigationService modalNavigationService = new ModalNavigationService(modalNavigationStore);
+            MainViewModel mainViewModel = new MainViewModel(navigationStore, modalNavigationStore);
 
-            HomeViewModel homeViewModel = new HomeViewModel(navigationService);
+            HomeViewModel homeViewModel = new HomeViewModel(navigationService, modalNavigationService);
             navigationService.Navigate(() => homeViewModel);
 
             MainWindow = new MainWindow()
