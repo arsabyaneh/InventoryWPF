@@ -7,6 +7,12 @@
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
     <Grid>
-        <Button Content="Click me!" Command="{Binding AddCommand}" Width="100" Height="100" Style="{StaticResource DefaultButtonStyle}"/>
+        <ScrollViewer HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto">
+            <StackPanel Orientation="Vertical">
+                <Button Content="Click me!" Command="{Binding AddCommand}" Width="300" Height="300" Style="{StaticResource DefaultButtonStyle}"/>
+                <Button Content="Click me!" Command="{Binding AddCommand}" Width="300" Height="300" Style="{StaticResource DefaultButtonStyle}"/>
+                <Button Content="Click me!" Command="{Binding AddCommand}" Width="300" Height="300" Style="{StaticResource DefaultButtonStyle}"/>
+            </StackPanel>
+        </ScrollViewer>
     </Grid>
 </UserControl>
