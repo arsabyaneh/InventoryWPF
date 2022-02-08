@@ -10,4 +10,8 @@
     <Folder Include="Models\" />
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\Inventory.EntityFramework\Inventory.EntityFramework.csproj" />
+  </ItemGroup>
+
 </Project>

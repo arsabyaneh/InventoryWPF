@@ -2,4 +2,6 @@ Inventory.Core/bin/
 Inventory.Core/obj/
 Inventory.wpf/bin/
 Inventory.wpf/obj/
+Inventory.EntityFramework/bin/
+Inventory.EntityFramework/obj/
 .vs/

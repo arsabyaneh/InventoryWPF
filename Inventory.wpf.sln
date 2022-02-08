@@ -5,7 +5,9 @@ VisualStudioVersion = 17.0.32014.148
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Inventory.wpf", "Inventory.wpf\Inventory.wpf.csproj", "{7DCFA6BE-7352-4E36-97CC-8AD08FD2B892}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Inventory.Core", "Inventory.Core\Inventory.Core.csproj", "{352210F8-872A-481B-B66F-F4BDF07AB741}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Inventory.Core", "Inventory.Core\Inventory.Core.csproj", "{352210F8-872A-481B-B66F-F4BDF07AB741}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Inventory.EntityFramework", "Inventory.EntityFramework\Inventory.EntityFramework.csproj", "{554CD528-DD45-453E-A73E-FEF4951098AE}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -21,6 +23,10 @@ Global
 		{352210F8-872A-481B-B66F-F4BDF07AB741}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{352210F8-872A-481B-B66F-F4BDF07AB741}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{352210F8-872A-481B-B66F-F4BDF07AB741}.Release|Any CPU.Build.0 = Release|Any CPU
+		{554CD528-DD45-453E-A73E-FEF4951098AE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{554CD528-DD45-453E-A73E-FEF4951098AE}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{554CD528-DD45-453E-A73E-FEF4951098AE}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{554CD528-DD45-453E-A73E-FEF4951098AE}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
