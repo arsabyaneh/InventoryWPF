@@ -9,4 +9,16 @@
 
     <Color x:Key="VeryLightGray">#efefef</Color>
     <SolidColorBrush x:Key="VeryLightGrayBrush" Color="{StaticResource VeryLightGray}" />
+
+    <Color x:Key="VeryLightPink">#ffb2b2</Color>
+    <SolidColorBrush x:Key="VeryLightPinkBrush" Color="{StaticResource VeryLightPink}" />
+    
+    <Color x:Key="LightPink">#ff9999</Color>
+    <SolidColorBrush x:Key="LightPinkBrush" Color="{StaticResource LightPink}"/>
+
+    <Color x:Key="DarkPink">#e06685</Color>
+    <SolidColorBrush x:Key="DarkPinkBrush" Color="{StaticResource DarkPink}"/>
+
+    <Color x:Key="LightRed">#ff6666</Color>
+    <SolidColorBrush x:Key="LightRedBrush" Color="{StaticResource LightRed}" />
 </ResourceDictionary>
