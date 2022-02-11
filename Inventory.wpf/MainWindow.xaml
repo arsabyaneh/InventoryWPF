@@ -20,6 +20,12 @@
             <DataTemplate DataType="{x:Type viewmodels:ProductViewModel}">
                 <views:ProductView/>
             </DataTemplate>
+            <DataTemplate DataType="{x:Type viewmodels:EmployeeViewModel}">
+                <views:EmployeeView/>
+            </DataTemplate>
+            <DataTemplate DataType="{x:Type viewmodels:RoleViewModel}">
+                <views:RoleView/>
+            </DataTemplate>
         </Grid.Resources>
 
         <controls:Modal Panel.ZIndex="1" IsOpen="{Binding IsOpen}" Background="White" ControlWidth="{Binding ModalControlWidth}">

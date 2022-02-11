@@ -1,0 +1,77 @@
+﻿<UserControl x:Class="Inventory.wpf.Views.EmployeeView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:Inventory.wpf.Views"
+             mc:Ignorable="d" 
+             d:DesignHeight="500" d:DesignWidth="800">
+    <UserControl.Resources>
+        <Style TargetType="{x:Type Label}" BasedOn="{StaticResource InputLabelStyle}"/>
+        <Style TargetType="{x:Type TextBox}" BasedOn="{StaticResource InputTextBoxStyle}"/>
+        <Style TargetType="{x:Type DatePicker}" BasedOn="{StaticResource InputDateStyle}"/>
+        <Style TargetType="{x:Type ComboBox}" BasedOn="{StaticResource InputComboboxStyle}"/>
+    </UserControl.Resources>
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="auto"/>
+            <RowDefinition Height="auto"/>
+            <RowDefinition Height="auto"/>
+            <RowDefinition Height="auto"/>
+            <RowDefinition Height="auto"/>
+            <RowDefinition Height="auto"/>
+            <RowDefinition Height="auto"/>
+            <RowDefinition Height="auto"/>
+            <RowDefinition Height="auto"/>
+            <RowDefinition Height="auto"/>
+            <RowDefinition Height="30"/>
+            <RowDefinition Height="auto"/>
+            <RowDefinition Height="auto"/>
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="120"/>
+            <ColumnDefinition Width="*"/>
+        </Grid.ColumnDefinitions>
+
+        <Label Grid.Row="0" Grid.Column="0" Content="Code: "/>
+        <TextBox Grid.Row="0" Grid.Column="1" Text="{Binding Code}"/>
+
+        <Label Grid.Row="1" Grid.Column="0" Content="First name: "/>
+        <TextBox Grid.Row="1" Grid.Column="1" Text="{Binding FirstName}"/>
+
+        <Label Grid.Row="2" Grid.Column="0" Content="Last name: "/>
+        <TextBox Grid.Row="2" Grid.Column="1" Text="{Binding LastName}"/>
+
+        <Label Grid.Row="3" Grid.Column="0" Content="Gender: "/>
+        <ComboBox Grid.Row="3" Grid.Column="1" SelectedIndex="{Binding Gender}">
+            <ComboBoxItem Content="Female"/>
+            <ComboBoxItem Content="Male"/>
+        </ComboBox>
+
+        <Label Grid.Row="4" Grid.Column="0" Content="Birth date: "/>
+        <DatePicker Grid.Row="4" Grid.Column="1" SelectedDate="{Binding BirthDate}"/>
+
+        <Label Grid.Row="5" Grid.Column="0" Content="Start date: "/>
+        <DatePicker Grid.Row="5" Grid.Column="1" SelectedDate="{Binding StartDate}"/>
+
+        <Label Grid.Row="6" Grid.Column="0" Content="End date: "/>
+        <DatePicker Grid.Row="6" Grid.Column="1" SelectedDate="{Binding EndDate}"/>
+
+        <Label Grid.Row="7" Grid.Column="0" Content="Email: "/>
+        <TextBox Grid.Row="7" Grid.Column="1" Text="{Binding Email}"/>
+
+        <Label Grid.Row="8" Grid.Column="0" Content="Telephone: "/>
+        <TextBox Grid.Row="8" Grid.Column="1" Text="{Binding Telephone}"/>
+
+        <Label Grid.Row="9" Grid.Column="0" Content="Address: "/>
+        <TextBox Grid.Row="9" Grid.Column="1" Grid.RowSpan="2" Text="{Binding Address}" TextWrapping="WrapWithOverflow"/>
+
+        <Label Grid.Row="11" Grid.Column="0" Content="Role: "/>
+        <ComboBox Grid.Row="11" Grid.Column="1" DisplayMemberPath="Title" SelectedItem="{Binding Role}" ItemsSource="{Binding Roles}"/>
+        
+        <StackPanel Grid.Row="12" Grid.Column="1" Orientation="Horizontal" HorizontalAlignment="Right">
+            <Button Content="OK" Width="80" Margin="10 5" Command="{Binding OkCommand}" Style="{StaticResource DefaultButtonStyle}"/>
+            <Button Content="Cancel" Width="80" Command="{Binding CancelCommand}" Style="{StaticResource DefaultButtonStyle}"/>
+        </StackPanel>
+    </Grid>
+</UserControl>

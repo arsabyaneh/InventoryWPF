@@ -35,6 +35,7 @@
             <Setter Property="HorizontalContentAlignment" Value="Left"/>
             <Setter Property="VerticalContentAlignment" Value="Center"/>
             <Setter Property="Padding" Value="10"/>
+            <Setter Property="Margin" Value="0 0 10 10"/>
             <Setter Property="Width" Value="230"/>
             <Setter Property="Height" Value="120"/>
             <Setter Property="FontSize" Value="{StaticResource FontSizeNormal}"/>
@@ -79,6 +80,18 @@
                     <StackPanel>
                         <TextBlock Text="Add Product" FontSize="{StaticResource FontSizeVeryLarge}" FontWeight="Bold" Margin="0 0 0 10"/>
                         <TextBlock Text="add a product to the database" FontSize="{StaticResource FontSizeNormal}"/>
+                    </StackPanel>
+                </Button>
+                <Button Command="{Binding AddEmployeeCommand}" HorizontalAlignment="Left" Style="{DynamicResource MenuButtonStyle}">
+                    <StackPanel>
+                        <TextBlock Text="Add Employee" FontSize="{StaticResource FontSizeVeryLarge}" FontWeight="Bold" Margin="0 0 0 10"/>
+                        <TextBlock Text="add an employee to the database" FontSize="{StaticResource FontSizeNormal}"/>
+                    </StackPanel>
+                </Button>
+                <Button Command="{Binding AddRoleCommand}" HorizontalAlignment="Left" Style="{DynamicResource MenuButtonStyle}">
+                    <StackPanel>
+                        <TextBlock Text="Add Role" FontSize="{StaticResource FontSizeVeryLarge}" FontWeight="Bold" Margin="0 0 0 10"/>
+                        <TextBlock Text="add an employee role to the database" FontSize="{StaticResource FontSizeNormal}"/>
                     </StackPanel>
                 </Button>
             </WrapPanel>
