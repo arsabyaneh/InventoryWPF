@@ -22,6 +22,7 @@ namespace Inventory.Core.Stores
         }
 
         public bool IsOpen => CurrentViewModel != null;
+        public double ControlWidth => CurrentViewModel != null ? CurrentViewModel.ControlWidth : 500.0;
 
         public event Action? CurrentViewModelChanged;
 
@@ -30,7 +31,7 @@ namespace Inventory.Core.Stores
             CurrentViewModelChanged?.Invoke();
         }
 
-        private void Close()
+        public void Close()
         {
             CurrentViewModel = null;
         }

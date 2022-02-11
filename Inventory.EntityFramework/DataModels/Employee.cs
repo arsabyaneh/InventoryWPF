@@ -6,7 +6,7 @@ namespace Inventory.EntityFramework.DataModels
     using System.ComponentModel.DataAnnotations.Schema;
 
     [Table("Employee")]
-    public partial class Employee
+    public partial class Employee : BaseDataModel
     {
         public Employee()
         {

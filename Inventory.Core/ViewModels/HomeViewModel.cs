@@ -13,20 +13,25 @@ namespace Inventory.Core.ViewModels
     {
         private readonly INavigationService _NavigationService;
         private readonly INavigationService _ModalNavigationService;
+        private readonly IProductService _ProductService;
 
-        public HomeViewModel(INavigationService navigationService, INavigationService modalNavigationService)
+        public HomeViewModel(INavigationService navigationService, INavigationService modalNavigationService, IProductService productService)
         {
             _NavigationService = navigationService;
             _ModalNavigationService = modalNavigationService;
+            _ProductService = productService;
 
-            AddCommand = new RelayCommand(Add);
+            AddProductCommand = new RelayCommand(AddProduct);
         }
 
-        public ICommand AddCommand { get; }
+        public ICommand AddProductCommand { get; }
 
-        private void Add()
+        private void AddProduct()
         {
-            _ModalNavigationService.Navigate(() => new AddNewItemViewModel());
+            _ModalNavigationService.Navigate(() => new ProductViewModel(_ModalNavigationService, _ProductService)
+            {
+                ControlWidth = 700
+            });
         }
     }
 }

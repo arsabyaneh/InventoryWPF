@@ -21,5 +21,10 @@ namespace Inventory.Core.Services
         {
             _ModalNavigationStore.CurrentViewModel = createViewModel();
         }
+
+        public void Close()
+        {
+            _ModalNavigationStore?.Close();
+        }
     }
 }

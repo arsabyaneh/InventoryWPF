@@ -12,6 +12,8 @@ namespace Inventory.Core.ViewModels
     {
         public event PropertyChangedEventHandler? PropertyChanged;
 
+        public double ControlWidth { get; set; } = 500.0;
+
         protected void OnPropertyChanged([CallerMemberName] string? name = default)
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(name));
@@ -19,26 +21,15 @@ namespace Inventory.Core.ViewModels
 
         protected bool SetProperty<T>(ref T field, T newValue, [CallerMemberName] string? propertyName = default)
         {
-            if (field == null)
+            if (object.Equals(field, newValue))
             {
-                if (newValue == null)
-                    return false;
-                else
-                {
-                    field = newValue;
-                    OnPropertyChanged(propertyName);
-                    return true;
-                }
+                return false;
             }
 
-            if (!field.Equals(newValue))
-            {
-                field = newValue;
-                OnPropertyChanged(propertyName);
-                return true;
-            }
-
-            return false;
+            field = newValue;
+            OnPropertyChanged(propertyName);
+            
+            return true;
         }
     }
 }

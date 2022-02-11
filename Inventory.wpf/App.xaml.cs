@@ -22,9 +22,11 @@ namespace Inventory.wpf
             ModalNavigationStore modalNavigationStore = new ModalNavigationStore();
             NavigationService navigationService = new NavigationService(navigationStore, navService => new NavigationBarViewModel(navService));
             ModalNavigationService modalNavigationService = new ModalNavigationService(modalNavigationStore);
+            ProductService productService = new ProductService();
             MainViewModel mainViewModel = new MainViewModel(navigationStore, modalNavigationStore);
 
-            HomeViewModel homeViewModel = new HomeViewModel(navigationService, modalNavigationService);
+
+            HomeViewModel homeViewModel = new HomeViewModel(navigationService, modalNavigationService, productService);
             navigationService.Navigate(() => homeViewModel);
 
             MainWindow = new MainWindow()

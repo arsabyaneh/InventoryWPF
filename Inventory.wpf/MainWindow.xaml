@@ -17,12 +17,12 @@
             <DataTemplate DataType="{x:Type viewmodels:HomeViewModel}">
                 <views:HomeView/>
             </DataTemplate>
-            <DataTemplate DataType="{x:Type viewmodels:AddNewItemViewModel}">
-                <views:AddNewItemView/>
+            <DataTemplate DataType="{x:Type viewmodels:ProductViewModel}">
+                <views:ProductView/>
             </DataTemplate>
         </Grid.Resources>
 
-        <controls:Modal Panel.ZIndex="1" IsOpen="{Binding IsOpen}" Background="White">
+        <controls:Modal Panel.ZIndex="1" IsOpen="{Binding IsOpen}" Background="White" ControlWidth="{Binding ModalControlWidth}">
             <ContentControl Content="{Binding CurrentModalViewModel}"/>
         </controls:Modal>
         

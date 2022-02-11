@@ -16,11 +16,11 @@ using System.Windows.Shapes;
 namespace Inventory.wpf.Views
 {
     /// <summary>
-    /// Interaction logic for AddNewItemView.xaml
+    /// Interaction logic for ProductView.xaml
     /// </summary>
-    public partial class AddNewItemView : UserControl
+    public partial class ProductView : UserControl
     {
-        public AddNewItemView()
+        public ProductView()
         {
             InitializeComponent();
         }

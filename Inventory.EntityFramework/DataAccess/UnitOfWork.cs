@@ -1,7 +1,9 @@
 ﻿using Inventory.EntityFramework.DataModels;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -122,6 +124,23 @@ namespace Inventory.EntityFramework
         public async void SaveAsync()
         {
             await _DbContext.SaveChangesAsync();
+        }
+
+        public TEntity InsertIfNotExists<TEntity>(IRepository<TEntity> repository, TEntity entity, Expression<Func<TEntity, bool>> filter)
+            where TEntity : class
+        {
+            TEntity loadedEntity = repository.Get(filter).FirstOrDefault();
+            if (loadedEntity == null)
+            {
+                repository.Insert(entity);
+            }
+
+            return loadedEntity;
+        }
+
+        public void SetEntryState<TEntity>(TEntity entity, EntityState entityState) where TEntity : class
+        {
+            _DbContext.Entry(entity).State = entityState;
         }
 
         protected virtual void Dispose(bool disposing)

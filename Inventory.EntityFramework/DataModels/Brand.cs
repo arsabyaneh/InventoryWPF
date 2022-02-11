@@ -6,7 +6,7 @@ namespace Inventory.EntityFramework.DataModels
     using System.ComponentModel.DataAnnotations.Schema;
 
     [Table("Brand")]
-    public partial class Brand
+    public partial class Brand : BaseDataModel
     {
         public Brand()
         {
@@ -19,7 +19,6 @@ namespace Inventory.EntityFramework.DataModels
         [StringLength(100)]
         public string Title { get; set; }
 
-        [Required]
         [StringLength(500)]
         public string Address { get; set; }
 

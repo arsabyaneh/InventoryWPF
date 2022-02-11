@@ -23,5 +23,10 @@ namespace Inventory.Core.Services
         {
             _NavigationStore.CurrentViewModel = new LayoutViewModel(_CreateNavigationBarViewModel(this), createViewModel());
         }
+
+        public void Close()
+        {
+            _NavigationStore?.Close();
+        }
     }
 }

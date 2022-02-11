@@ -6,7 +6,7 @@ namespace Inventory.EntityFramework.DataModels
     using System.ComponentModel.DataAnnotations.Schema;
 
     [Table("Role")]
-    public partial class Role
+    public partial class Role : BaseDataModel
     {
         public Role()
         {

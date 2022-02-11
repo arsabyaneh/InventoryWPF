@@ -10,5 +10,6 @@ namespace Inventory.Core.Services
     public interface INavigationService
     {
         void Navigate<TViewModel>(Func<TViewModel> createViewModel) where TViewModel : BaseViewModel;
+        void Close();
     }
 }

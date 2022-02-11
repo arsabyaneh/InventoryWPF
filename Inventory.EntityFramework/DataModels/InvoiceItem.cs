@@ -6,7 +6,7 @@ namespace Inventory.EntityFramework.DataModels
     using System.ComponentModel.DataAnnotations.Schema;
 
     [Table("InvoiceItem")]
-    public partial class InvoiceItem
+    public partial class InvoiceItem : BaseDataModel
     {
         public long Id { get; set; }
 

@@ -27,5 +27,10 @@ namespace Inventory.Core.Stores
         {
             CurrentViewModelChanged?.Invoke();
         }
+
+        public void Close()
+        {
+
+        }
     }
 }

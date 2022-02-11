@@ -24,6 +24,7 @@ namespace Inventory.Core.ViewModels
         public BaseViewModel? CurrentViewModel => _NavigationStore.CurrentViewModel;
         public BaseViewModel? CurrentModalViewModel => _ModalNavigationStore.CurrentViewModel;
         public bool IsOpen => _ModalNavigationStore.IsOpen;
+        public double ModalControlWidth => _ModalNavigationStore.ControlWidth;
 
         private void OnCurrentViewModelChanged()
         {
@@ -34,6 +35,7 @@ namespace Inventory.Core.ViewModels
         {
             OnPropertyChanged(nameof(CurrentModalViewModel));
             OnPropertyChanged(nameof(IsOpen));
+            OnPropertyChanged(nameof(ModalControlWidth));
         }
     }
 }

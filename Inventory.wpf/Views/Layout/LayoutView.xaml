@@ -14,7 +14,7 @@
         </Grid.RowDefinitions>
 
         <views:NavigationBarView Grid.Row="0" DataContext="{Binding NavigationBarViewModel}"/>
-        <ContentControl Grid.Row="1" Content="{Binding ContentViewModel}"/>
+        <ContentControl Grid.Row="1" Content="{Binding ContentViewModel}" Margin="10"/>
         <views:LayoutFooterView Grid.Row="2"/>
     </Grid>
 </UserControl>

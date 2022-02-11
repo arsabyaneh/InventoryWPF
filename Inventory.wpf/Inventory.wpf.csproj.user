@@ -7,9 +7,6 @@
     </ApplicationDefinition>
   </ItemGroup>
   <ItemGroup>
-    <Compile Update="Views\AddNewItemView.xaml.cs">
-      <SubType>Code</SubType>
-    </Compile>
     <Compile Update="Views\HomeView.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -20,6 +17,9 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Update="Views\Layout\NavigationBarView.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Update="Views\ProductView.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
   </ItemGroup>
@@ -45,9 +45,6 @@
     <Page Update="Themes\Generic.xaml">
       <SubType>Designer</SubType>
     </Page>
-    <Page Update="Views\AddNewItemView.xaml">
-      <SubType>Designer</SubType>
-    </Page>
     <Page Update="Views\HomeView.xaml">
       <SubType>Designer</SubType>
     </Page>
@@ -58,6 +55,9 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Update="Views\Layout\NavigationBarView.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="Views\ProductView.xaml">
       <SubType>Designer</SubType>
     </Page>
   </ItemGroup>

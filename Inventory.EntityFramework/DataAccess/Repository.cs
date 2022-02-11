@@ -88,8 +88,7 @@ namespace Inventory.EntityFramework
 
         public virtual void Update(TEntity entity)
         {
-            _DbSet.Attach(entity);
-            _DbContext.Entry(entity).State = EntityState.Modified;
+            _DbSet.Update(entity);
         }
     }
 }
