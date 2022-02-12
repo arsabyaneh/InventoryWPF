@@ -47,5 +47,13 @@ namespace Inventory.Core.Services
                 return uow.PriceRepository.Get(filter: x => x.ProductId == productId, orderBy: o => o.OrderByDescending(x => x.PriceDate));
             }
         }
+
+        public Product LoadProduct(string code)
+        {
+            using (UnitOfWork uow = new UnitOfWork())
+            {
+                return uow.ProductRepository.GetDbSet().Include(x => x.Prices).Where(x => x.Code == code).FirstOrDefault();
+            }
+        }
     }
 }
