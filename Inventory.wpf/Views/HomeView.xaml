@@ -88,6 +88,12 @@
                         <TextBlock Text="add an employee to the database" FontSize="{StaticResource FontSizeNormal}"/>
                     </StackPanel>
                 </Button>
+                <Button Command="{Binding AddCustomerCommand}" HorizontalAlignment="Left" Style="{DynamicResource MenuButtonStyle}">
+                    <StackPanel>
+                        <TextBlock Text="Add Customer" FontSize="{StaticResource FontSizeVeryLarge}" FontWeight="Bold" Margin="0 0 0 10"/>
+                        <TextBlock Text="add a customer to the database" FontSize="{StaticResource FontSizeNormal}"/>
+                    </StackPanel>
+                </Button>
                 <Button Command="{Binding AddRoleCommand}" HorizontalAlignment="Left" Style="{DynamicResource MenuButtonStyle}">
                     <StackPanel>
                         <TextBlock Text="Add Role" FontSize="{StaticResource FontSizeVeryLarge}" FontWeight="Bold" Margin="0 0 0 10"/>

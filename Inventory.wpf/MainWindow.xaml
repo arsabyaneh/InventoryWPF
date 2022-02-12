@@ -26,6 +26,9 @@
             <DataTemplate DataType="{x:Type viewmodels:RoleViewModel}">
                 <views:RoleView/>
             </DataTemplate>
+            <DataTemplate DataType="{x:Type viewmodels:CustomerViewModel}">
+                <views:CustomerView/>
+            </DataTemplate>
         </Grid.Resources>
 
         <controls:Modal Panel.ZIndex="1" IsOpen="{Binding IsOpen}" Background="White" ControlWidth="{Binding ModalControlWidth}">

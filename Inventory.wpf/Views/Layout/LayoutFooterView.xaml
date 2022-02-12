@@ -8,6 +8,9 @@
              d:DesignHeight="450" d:DesignWidth="800"
              Background="PaleVioletRed">
     <Grid>
-            
+        <TextBlock Text="Inventory Software Group" 
+                   HorizontalAlignment="Right" VerticalAlignment="Center"
+                   FontSize="16" FontWeight="Bold"
+                   Padding="5"/>
     </Grid>
 </UserControl>
