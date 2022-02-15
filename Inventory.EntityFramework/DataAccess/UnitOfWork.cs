@@ -121,7 +121,7 @@ namespace Inventory.EntityFramework
             _DbContext.SaveChanges();
         }
 
-        public async void SaveAsync()
+        public async Task SaveAsync()
         {
             await _DbContext.SaveChangesAsync();
         }

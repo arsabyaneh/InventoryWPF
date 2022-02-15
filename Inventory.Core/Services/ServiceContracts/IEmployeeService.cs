@@ -10,7 +10,8 @@ namespace Inventory.Core.Services
     public interface IEmployeeService
     {
         IEnumerable<Role> LoadAllRoles();
-        void Save(Employee employee);
+        Task Save(Employee employee);
         void Save(Role role);
+        Task<Employee> LoadEmployee(string username);
     }
 }

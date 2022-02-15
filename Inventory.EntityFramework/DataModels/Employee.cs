@@ -52,6 +52,14 @@ namespace Inventory.EntityFramework.DataModels
         [StringLength(500)]
         public string Address { get; set; }
 
+        [Required]
+        [StringLength(50)]
+        public string Username { get; set; }
+
+        [Required]
+        [StringLength(255)]
+        public string PasswordHash { get; set; }
+
         public long RoleId { get; set; }
 
         public virtual Role Role { get; set; }

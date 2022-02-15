@@ -21,7 +21,7 @@ namespace Inventory.EntityFramework
         Repository<Role> RoleRepository { get; }
 
         void Save();
-        void SaveAsync();
+        Task SaveAsync();
         TEntity InsertIfNotExists<TEntity>(IRepository<TEntity> repository, TEntity entity, Expression<Func<TEntity, bool>> filter) where TEntity : class;
         void SetEntryState<TEntity>(TEntity entity, EntityState entityState) where TEntity : class;
     }

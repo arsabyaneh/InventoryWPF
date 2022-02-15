@@ -1,5 +1,6 @@
 ﻿using Inventory.EntityFramework;
 using Inventory.EntityFramework.DataModels;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -18,12 +19,12 @@ namespace Inventory.Core.Services
             }
         }
 
-        public void Save(Employee employee)
+        public async Task Save(Employee employee)
         {
             using (UnitOfWork uow = new UnitOfWork())
             {
                 uow.EmployeeRepository.Update(employee);
-                uow.Save();
+                await uow.SaveAsync();
             }
         }
 
@@ -38,6 +39,14 @@ namespace Inventory.Core.Services
                     uow.RoleRepository.Update(role);
                     uow.Save();
                 }
+            }
+        }
+
+        public async Task<Employee> LoadEmployee(string username)
+        {
+            using (UnitOfWork uow = new UnitOfWork())
+            {
+                return await uow.EmployeeRepository.GetDbSet().FirstOrDefaultAsync(x => x.Username == username);
             }
         }
     }
