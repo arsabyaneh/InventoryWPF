@@ -13,17 +13,19 @@ namespace Inventory.Core.ViewModels
     {
         private readonly INavigationService _NavigationService;
         private readonly INavigationService _ModalNavigationService;
+        private readonly IAuthenticationService _AuthenticationService;
         private readonly IProductService _ProductService;
         private readonly IEmployeeService _EmployeeService;
         private readonly ICustomerService _CustomerService;
 
-        public HomeViewModel(INavigationService navigationService, INavigationService modalNavigationService, IProductService productService, IEmployeeService employeeService, ICustomerService customerService)
+        public HomeViewModel(INavigationService navigationService, INavigationService modalNavigationService, IAuthenticationService authenticationService, IProductService productService, IEmployeeService employeeService, ICustomerService customerService)
         {
             _NavigationService = navigationService;
             _ModalNavigationService = modalNavigationService;
             _ProductService = productService;
             _EmployeeService = employeeService;
             _CustomerService = customerService;
+            _AuthenticationService = authenticationService;
 
             AddProductCommand = new RelayCommand(AddProduct);
             AddEmployeeCommand = new RelayCommand(AddEmployee);
@@ -46,7 +48,7 @@ namespace Inventory.Core.ViewModels
 
         private void AddEmployee()
         {
-            _ModalNavigationService.Navigate(() => new EmployeeViewModel(_ModalNavigationService, _EmployeeService) 
+            _ModalNavigationService.Navigate(() => new EmployeeViewModel(_ModalNavigationService, _AuthenticationService, _EmployeeService) 
             {
                 ControlWidth = 500
             });

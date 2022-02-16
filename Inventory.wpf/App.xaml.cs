@@ -1,6 +1,7 @@
 ﻿using Inventory.Core.Services;
 using Inventory.Core.Stores;
 using Inventory.Core.ViewModels;
+using Microsoft.AspNet.Identity;
 using System;
 using System.Collections.Generic;
 using System.Configuration;
@@ -25,9 +26,10 @@ namespace Inventory.wpf
             ProductService productService = new ProductService();
             EmployeeService employeeService = new EmployeeService();
             CustomerService customerService = new CustomerService();
+            AuthenticationService authenticationService = new AuthenticationService(employeeService, new PasswordHasher());
             MainViewModel mainViewModel = new MainViewModel(navigationStore, modalNavigationStore);
 
-            HomeViewModel homeViewModel = new HomeViewModel(navigationService, modalNavigationService, productService, employeeService, customerService);
+            HomeViewModel homeViewModel = new HomeViewModel(navigationService, modalNavigationService, authenticationService, productService, employeeService, customerService);
             navigationService.Navigate(() => homeViewModel);
 
             MainWindow = new MainWindow()

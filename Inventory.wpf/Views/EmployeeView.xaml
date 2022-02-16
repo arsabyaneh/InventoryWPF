@@ -3,9 +3,9 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
-             xmlns:local="clr-namespace:Inventory.wpf.Views"
+             xmlns:controls="clr-namespace:Inventory.wpf.Controls"
              mc:Ignorable="d" 
-             d:DesignHeight="500" d:DesignWidth="800">
+             d:DesignHeight="600" d:DesignWidth="800">
     <UserControl.Resources>
         <Style TargetType="{x:Type Label}" BasedOn="{StaticResource InputLabelStyle}"/>
         <Style TargetType="{x:Type TextBox}" BasedOn="{StaticResource InputTextBoxStyle}"/>
@@ -25,6 +25,9 @@
             <RowDefinition Height="auto"/>
             <RowDefinition Height="auto"/>
             <RowDefinition Height="30"/>
+            <RowDefinition Height="auto"/>
+            <RowDefinition Height="auto"/>
+            <RowDefinition Height="auto"/>
             <RowDefinition Height="auto"/>
             <RowDefinition Height="auto"/>
         </Grid.RowDefinitions>
@@ -68,8 +71,17 @@
 
         <Label Grid.Row="11" Grid.Column="0" Content="Role: "/>
         <ComboBox Grid.Row="11" Grid.Column="1" DisplayMemberPath="Title" SelectedItem="{Binding Role}" ItemsSource="{Binding Roles}"/>
+
+        <Label Grid.Row="12" Grid.Column="0" Content="Username: "/>
+        <TextBox Grid.Row="12" Grid.Column="1" Text="{Binding Username}"/>
+
+        <Label Grid.Row="13" Grid.Column="0" Content="Password: "/>
+        <controls:BindablePasswordBox Grid.Row="13" Grid.Column="1" Password="{Binding Password}" Background="White"/>
         
-        <StackPanel Grid.Row="12" Grid.Column="1" Orientation="Horizontal" HorizontalAlignment="Right">
+        <Label Grid.Row="14" Grid.Column="0" Content="Confirm password: "/>
+        <controls:BindablePasswordBox Grid.Row="14" Grid.Column="1" Password="{Binding ConfirmPassword}" Background="White"/>
+        
+        <StackPanel Grid.Row="15" Grid.Column="1" Orientation="Horizontal" HorizontalAlignment="Right">
             <Button Content="OK" Width="80" Margin="10 5" Command="{Binding OkCommand}" Style="{StaticResource DefaultButtonStyle}"/>
             <Button Content="Cancel" Width="80" Command="{Binding CancelCommand}" Style="{StaticResource DefaultButtonStyle}"/>
         </StackPanel>

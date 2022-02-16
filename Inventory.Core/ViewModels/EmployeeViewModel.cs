@@ -12,6 +12,7 @@ namespace Inventory.Core.ViewModels
     public class EmployeeViewModel : BaseViewModel
     {
         private readonly INavigationService _NavigationService;
+        private readonly IAuthenticationService _AuthenticationService;
         private readonly IEmployeeService _EmployeeService;
 
         private string _Code;
@@ -24,14 +25,18 @@ namespace Inventory.Core.ViewModels
         private string _Email;
         private string _Telephone;
         private string _Address;
+        private string _Username;
+        private string _Password;
+        private string _ConfirmPassword;
         private Role _Role;
 
         private Employee _Employee;
 
-        public EmployeeViewModel(INavigationService navigationService, IEmployeeService employeeService)
+        public EmployeeViewModel(INavigationService navigationService, IAuthenticationService authenticationService, IEmployeeService employeeService)
         {
             _NavigationService = navigationService;
             _EmployeeService = employeeService;
+            _AuthenticationService = authenticationService;
 
             Roles = _EmployeeService.LoadAllRoles().ToList();
 
@@ -49,6 +54,9 @@ namespace Inventory.Core.ViewModels
         public string Email { get => _Email; set => SetProperty(ref _Email, value); }
         public string Telephone { get => _Telephone; set => SetProperty(ref _Telephone, value); }
         public string Address { get => _Address; set => SetProperty(ref _Address, value); }
+        public string Username { get => _Username; set => SetProperty(ref _Username, value); }
+        public string Password { get => _Password; set => SetProperty(ref _Password, value); }
+        public string ConfirmPassword { get => _ConfirmPassword; set => SetProperty(ref _ConfirmPassword, value); }
         public Role Role { get => _Role; set => SetProperty(ref _Role, value); }
 
         public List<Role> Roles { get; set; }
@@ -74,7 +82,8 @@ namespace Inventory.Core.ViewModels
                     Telephone = Telephone,
                     Address = Address,
                     IsActive = EndDate == null ? true : false,
-                    RoleId = Role.Id
+                    RoleId = Role.Id,
+                    Username = Username
                 };
 
                 return _Employee;
@@ -94,13 +103,14 @@ namespace Inventory.Core.ViewModels
                 Email = _Employee?.Email;
                 Telephone = _Employee?.Telephone;
                 Address = _Employee?.Address;
+                Username = _Employee?.Username;
                 Role = Roles.FirstOrDefault(x => x.Title == _Employee?.Role?.Title);
             }
         }
 
         private void Ok()
         {
-            _EmployeeService.Save(Employee);
+            _AuthenticationService.Register(Employee, Password, ConfirmPassword);
             _NavigationService.Close();
         }
 

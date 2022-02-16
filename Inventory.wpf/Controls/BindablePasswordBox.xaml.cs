@@ -61,7 +61,7 @@ namespace Inventory.wpf.Controls
             if (!_IsPasswordChanging)
             {
                 PasswordBox.Password = Password;
-                Placeholder.Visibility = Password.Length > 0 ? Visibility.Collapsed : Visibility.Visible;
+                Placeholder.Visibility = !string.IsNullOrEmpty(Password) ? Visibility.Collapsed : Visibility.Visible;
             }
         }
     }

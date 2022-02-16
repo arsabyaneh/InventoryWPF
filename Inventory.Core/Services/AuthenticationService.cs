@@ -15,6 +15,12 @@ namespace Inventory.Core.Services
         private readonly IEmployeeService _EmployeeService;
         private readonly IPasswordHasher _PasswordHasher;
 
+        public AuthenticationService(IEmployeeService employeeService, IPasswordHasher passwordHasher)
+        {
+            _EmployeeService = employeeService;
+            _PasswordHasher = passwordHasher;
+        }
+
         public async Task<Employee> Login(string username, string password)
         {
             Employee loadedEmployee = await _EmployeeService.LoadEmployee(username);

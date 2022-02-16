@@ -40,7 +40,9 @@
                          Tag="Username"
                          Style="{StaticResource TextBoxWithPlaceholderStyle}"/>
 
-                <controls:BindablePasswordBox Grid.Row="1" Margin="0 10" Password="{Binding Password}"/>
+                <controls:BindablePasswordBox Grid.Row="1" Margin="0 10" 
+                                              Password="{Binding Password}"
+                                              Background="{StaticResource VeryLightGrayBrush}"/>
 
                 <Button Grid.Row="2" Margin="0 10"
                         HorizontalAlignment="Center"
