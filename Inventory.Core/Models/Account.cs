@@ -9,8 +9,8 @@ namespace Inventory.Core.Models
 {
     public class Account
     {
-        public string FirstName { get; set; }
-        public string LastName { get; set; }
+        public string FirstName { get => Employee?.FirstName; }
+        public string LastName { get => Employee?.LastName; }
 
         public Employee Employee { get; set; }
     }
