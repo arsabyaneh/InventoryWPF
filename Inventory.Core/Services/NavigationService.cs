@@ -21,12 +21,26 @@ namespace Inventory.Core.Services
 
         public void Navigate<TViewModel>(Func<TViewModel> createViewModel) where TViewModel : BaseViewModel
         {
-            _NavigationStore.CurrentViewModel = new LayoutViewModel(_CreateNavigationBarViewModel(this), createViewModel());
+            TViewModel viewModel = createViewModel();
+            _NavigationStore.CurrentViewModel = new LayoutViewModel(_CreateNavigationBarViewModel(this), viewModel)
+            {
+                ViewModelType = viewModel.ViewModelType
+            };
         }
 
         public void Close()
         {
             _NavigationStore?.Close();
+        }
+
+        public void NavigateHome()
+        {
+            _NavigationStore?.NavigateHome();
+        }
+
+        public void Logout()
+        {
+            _NavigationStore?.Logout();
         }
     }
 }

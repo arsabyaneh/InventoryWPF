@@ -12,9 +12,11 @@ namespace Inventory.Core.ViewModels
         {
             NavigationBarViewModel = navigationBarViewModel;
             ContentViewModel = contentViewModel;
+            IsNavigationBarVisible = contentViewModel.ViewModelType != ViewModelType.Login;
         }
 
         public NavigationBarViewModel NavigationBarViewModel { get; }
         public BaseViewModel ContentViewModel { get; }
+        public bool IsNavigationBarVisible { get; }
     }
 }

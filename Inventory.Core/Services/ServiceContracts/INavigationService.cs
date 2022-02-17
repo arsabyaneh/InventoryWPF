@@ -11,5 +11,7 @@ namespace Inventory.Core.Services
     {
         void Navigate<TViewModel>(Func<TViewModel> createViewModel) where TViewModel : BaseViewModel;
         void Close();
+        void NavigateHome();
+        public void Logout();
     }
 }

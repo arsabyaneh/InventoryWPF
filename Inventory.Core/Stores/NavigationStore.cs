@@ -26,7 +26,7 @@ namespace Inventory.Core.Stores
 
         private void OnCurrentViewModelChanged()
         {
-            if (CurrentViewModel != null)
+            if (CurrentViewModel != null && !_ViewModelsStack.Contains(CurrentViewModel))
                 _ViewModelsStack.Push(_CurrentViewModel);
 
             CurrentViewModelChanged?.Invoke();
@@ -48,6 +48,26 @@ namespace Inventory.Core.Stores
             {
                 CurrentViewModel = null;
             }
+        }
+
+        public void NavigateHome()
+        {
+            while (_ViewModelsStack.Peek()?.ViewModelType != ViewModelType.Home)
+            {
+                _ViewModelsStack.Pop();
+            }
+
+            CurrentViewModel = _ViewModelsStack.Peek();
+        }
+
+        public void Logout()
+        {
+            while (_ViewModelsStack.Peek()?.ViewModelType != ViewModelType.Login)
+            {
+                _ViewModelsStack.Pop();
+            }
+
+            CurrentViewModel = _ViewModelsStack.Peek();
         }
     }
 }

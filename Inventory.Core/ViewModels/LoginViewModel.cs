@@ -29,6 +29,9 @@ namespace Inventory.Core.ViewModels
             _HomeViewModel = homeViewModel;
             _AccountStore = accountStore;
 
+            ViewModelType = ViewModelType.Login;
+            ErrorMessageViewModel = new MessageViewModel();
+
             LoginCommand = new RelayAsyncCommand(Login, ex => throw ex);
         }
 
@@ -50,6 +53,9 @@ namespace Inventory.Core.ViewModels
                 {
                     Employee = employee
                 };
+
+                Username = string.Empty;
+                Password = string.Empty;
 
                 _NavigationService.Navigate(() => _HomeViewModel);
             }

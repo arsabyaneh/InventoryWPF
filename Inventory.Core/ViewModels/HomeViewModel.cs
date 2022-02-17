@@ -27,6 +27,8 @@ namespace Inventory.Core.ViewModels
             _CustomerService = customerService;
             _AuthenticationService = authenticationService;
 
+            ViewModelType = ViewModelType.Home;
+
             AddProductCommand = new RelayCommand(AddProduct);
             AddEmployeeCommand = new RelayCommand(AddEmployee);
             AddRoleCommand = new RelayCommand(AddRole);

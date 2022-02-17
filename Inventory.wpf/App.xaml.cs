@@ -21,7 +21,8 @@ namespace Inventory.wpf
         {
             NavigationStore navigationStore = new NavigationStore();
             ModalNavigationStore modalNavigationStore = new ModalNavigationStore();
-            NavigationService navigationService = new NavigationService(navigationStore, navService => new NavigationBarViewModel(navService));
+            AccountStore accountStore = new AccountStore();
+            NavigationService navigationService = new NavigationService(navigationStore, navService => new NavigationBarViewModel(navService, accountStore));
             ModalNavigationService modalNavigationService = new ModalNavigationService(modalNavigationStore);
             ProductService productService = new ProductService();
             EmployeeService employeeService = new EmployeeService();
@@ -30,7 +31,8 @@ namespace Inventory.wpf
             MainViewModel mainViewModel = new MainViewModel(navigationStore, modalNavigationStore);
 
             HomeViewModel homeViewModel = new HomeViewModel(navigationService, modalNavigationService, authenticationService, productService, employeeService, customerService);
-            navigationService.Navigate(() => homeViewModel);
+            LoginViewModel loginViewModel = new LoginViewModel(navigationService, authenticationService, homeViewModel, accountStore);
+            navigationService.Navigate(() => loginViewModel);
 
             MainWindow = new MainWindow()
             {

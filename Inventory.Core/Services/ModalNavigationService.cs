@@ -26,5 +26,15 @@ namespace Inventory.Core.Services
         {
             _ModalNavigationStore?.Close();
         }
+
+        public void NavigateHome()
+        {
+            
+        }
+
+        public void Logout()
+        {
+            
+        }
     }
 }

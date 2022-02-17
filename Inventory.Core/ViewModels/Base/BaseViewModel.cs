@@ -13,6 +13,7 @@ namespace Inventory.Core.ViewModels
         public event PropertyChangedEventHandler? PropertyChanged;
 
         public double ControlWidth { get; set; } = 500.0;
+        public ViewModelType ViewModelType { get; set; }
 
         protected void OnPropertyChanged([CallerMemberName] string? name = default)
         {
@@ -31,5 +32,12 @@ namespace Inventory.Core.ViewModels
             
             return true;
         }
+    }
+
+    public enum ViewModelType
+    {
+        None,
+        Login,
+        Home
     }
 }
