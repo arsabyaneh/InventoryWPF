@@ -55,5 +55,11 @@ namespace Inventory.Core.Services
                 return uow.ProductRepository.GetDbSet().Include(x => x.Prices).Where(x => x.Code == code).FirstOrDefault();
             }
         }
+
+        public decimal LoadProductSellPrice(string code)
+        {
+            Product product = LoadProduct(code);
+            return product.Prices.OrderByDescending(x => x.PriceDate).First().Sell;
+        }
     }
 }

@@ -21,9 +21,10 @@
             <RowDefinition Height="auto"/>
             <RowDefinition Height="auto"/>
             <RowDefinition Height="auto"/>
+            <RowDefinition Height="auto"/>
         </Grid.RowDefinitions>
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="50"/>
+            <ColumnDefinition Width="80"/>
             <ColumnDefinition Width="*"/>
         </Grid.ColumnDefinitions>
 
@@ -36,7 +37,10 @@
         <Label Grid.Row="2" Grid.Column="0" Content="Discount: "/>
         <TextBox Grid.Row="2" Grid.Column="1" Text="{Binding Discount}" />
 
-        <GroupBox Grid.Row="3" Grid.Column="0" Grid.ColumnSpan="2" 
+        <Label Grid.Row="3" Grid.Column="0" Content="Employee: "/>
+        <TextBox Grid.Row="3" Grid.Column="1" Text="{Binding EmployeeName}" />
+        
+        <GroupBox Grid.Row="4" Grid.Column="0" Grid.ColumnSpan="2" 
                   Header="Product Items" BorderBrush="Gray">
             <Grid>
                 <Grid.ColumnDefinitions>
@@ -52,7 +56,7 @@
                         Style="{StaticResource DefaultButtonStyle}"/>
                 </StackPanel>
                 <ListView Grid.Column="2" Height="200" BorderBrush="LightGray"
-                          ItemsSource="{Binding InvoiceItems}">
+                          ItemsSource="{Binding InvoiceItemViewModels}">
                     <ListView.View>
                         <GridView>
                             <GridViewColumn Header="Product" Width="150">
@@ -81,11 +85,11 @@
                 </ListView>
             </Grid>
         </GroupBox>
-        <StackPanel Grid.Row="4" Grid.Column="1" Orientation="Horizontal" HorizontalAlignment="Right">
+        <StackPanel Grid.Row="5" Grid.Column="1" Orientation="Horizontal" HorizontalAlignment="Right">
             <Label Content="Total Price: "/>
             <TextBox Text="{Binding TotalPrice}" Width="100" VerticalAlignment="Center"/>
         </StackPanel>
-        <StackPanel Grid.Row="5" Grid.Column="1" Orientation="Horizontal" HorizontalAlignment="Right">
+        <StackPanel Grid.Row="6" Grid.Column="1" Orientation="Horizontal" HorizontalAlignment="Right">
             <Button Content="OK" Width="80" Margin="10 5" Command="{Binding OkCommand}" Style="{StaticResource DefaultButtonStyle}"/>
             <Button Content="Cancel" Width="80" Command="{Binding CancelCommand}" Style="{StaticResource DefaultButtonStyle}"/>
         </StackPanel>

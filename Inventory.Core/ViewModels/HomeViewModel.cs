@@ -1,4 +1,5 @@
 ﻿using Inventory.Core.Services;
+using Inventory.Core.Stores;
 using Inventory.EntityFramework.DataModels;
 using System;
 using System.Collections.Generic;
@@ -17,15 +18,20 @@ namespace Inventory.Core.ViewModels
         private readonly IProductService _ProductService;
         private readonly IEmployeeService _EmployeeService;
         private readonly ICustomerService _CustomerService;
+        private readonly IInvoiceService _InvoiceService;
+        private readonly AccountStore _AccountStore;
 
-        public HomeViewModel(INavigationService navigationService, INavigationService modalNavigationService, IAuthenticationService authenticationService, IProductService productService, IEmployeeService employeeService, ICustomerService customerService)
+        public HomeViewModel(INavigationService navigationService, INavigationService modalNavigationService, IAuthenticationService authenticationService, IProductService productService, 
+            IEmployeeService employeeService, ICustomerService customerService, IInvoiceService invoiceService, AccountStore accountStore)
         {
             _NavigationService = navigationService;
             _ModalNavigationService = modalNavigationService;
+            _AuthenticationService = authenticationService;
             _ProductService = productService;
             _EmployeeService = employeeService;
             _CustomerService = customerService;
-            _AuthenticationService = authenticationService;
+            _InvoiceService = invoiceService;
+            _AccountStore = accountStore;
 
             ViewModelType = ViewModelType.Home;
 
@@ -33,12 +39,14 @@ namespace Inventory.Core.ViewModels
             AddEmployeeCommand = new RelayCommand(AddEmployee);
             AddRoleCommand = new RelayCommand(AddRole);
             AddCustomerCommand = new RelayCommand(AddCustomer);
+            AddInvoiceCommand = new RelayCommand(AddInvoice);
         }
 
         public ICommand AddProductCommand { get; }
         public ICommand AddEmployeeCommand { get; }
         public ICommand AddRoleCommand { get; }
         public ICommand AddCustomerCommand { get; }
+        public ICommand AddInvoiceCommand { get; }
 
         private void AddProduct()
         {
@@ -69,6 +77,14 @@ namespace Inventory.Core.ViewModels
             _ModalNavigationService.Navigate(() => new CustomerViewModel(_ModalNavigationService, _CustomerService)
             {
                 ControlWidth = 500
+            });
+        }
+
+        private void AddInvoice()
+        {
+            _ModalNavigationService.Navigate(() => new InvoiceViewModel(_ModalNavigationService, _InvoiceService, _ProductService, _CustomerService, _AccountStore, null)
+            {
+                ControlWidth = 700
             });
         }
     }

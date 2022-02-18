@@ -12,5 +12,6 @@ namespace Inventory.Core.Services
         void Save(Product product);
         IEnumerable<Price> LoadPrices(long productId);
         Product LoadProduct(string code);
+        decimal LoadProductSellPrice(string code);
     }
 }

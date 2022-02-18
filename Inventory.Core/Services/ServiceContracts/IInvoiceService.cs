@@ -7,10 +7,8 @@ using System.Threading.Tasks;
 
 namespace Inventory.Core.Services
 {
-    public interface ICustomerService
+    public interface IInvoiceService
     {
-        Customer CashDeskCustomer { get; }
-
-        void Save(Customer customer);
+        void Save(Invoice invoice);
     }
 }

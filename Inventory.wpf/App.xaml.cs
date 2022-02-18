@@ -27,10 +27,11 @@ namespace Inventory.wpf
             ProductService productService = new ProductService();
             EmployeeService employeeService = new EmployeeService();
             CustomerService customerService = new CustomerService();
+            InvoiceService invoiceService = new InvoiceService();
             AuthenticationService authenticationService = new AuthenticationService(employeeService, new PasswordHasher());
             MainViewModel mainViewModel = new MainViewModel(navigationStore, modalNavigationStore);
 
-            HomeViewModel homeViewModel = new HomeViewModel(navigationService, modalNavigationService, authenticationService, productService, employeeService, customerService);
+            HomeViewModel homeViewModel = new HomeViewModel(navigationService, modalNavigationService, authenticationService, productService, employeeService, customerService, invoiceService, accountStore);
             LoginViewModel loginViewModel = new LoginViewModel(navigationService, authenticationService, homeViewModel, accountStore);
             navigationService.Navigate(() => loginViewModel);
 
