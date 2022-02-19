@@ -60,21 +60,21 @@
 
     <Style x:Key="InputLabelStyle" TargetType="{x:Type Label}">
         <Setter Property="FontSize" Value="{StaticResource FontSizeNormal}"/>
-        <Setter Property="Margin" Value="0 0 0 10"/>
+        <Setter Property="Margin" Value="0 5"/>
     </Style>
 
     <Style x:Key="InputTextBoxStyle" TargetType="{x:Type TextBox}">
         <Setter Property="FontSize" Value="{StaticResource FontSizeNormal}"/>
-        <Setter Property="Margin" Value="0 0 0 10"/>
+        <Setter Property="Margin" Value="0 5"/>
     </Style>
 
     <Style x:Key="InputDateStyle" TargetType="{x:Type DatePicker}">
         <Setter Property="FontSize" Value="{StaticResource FontSizeNormal}"/>
-        <Setter Property="Margin" Value="0 0 0 10"/>
+        <Setter Property="Margin" Value="0 5"/>
     </Style>
 
     <Style x:Key="InputComboboxStyle" TargetType="{x:Type ComboBox}">
         <Setter Property="FontSize" Value="{StaticResource FontSizeNormal}"/>
-        <Setter Property="Margin" Value="0 0 0 10"/>
+        <Setter Property="Margin" Value="0 5"/>
     </Style>
 </ResourceDictionary>

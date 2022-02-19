@@ -41,7 +41,7 @@ namespace Inventory.EntityFramework.DataModels
         public string Telephone { get; set; }
 
         [StringLength(500)]
-        public string Address { get; set; }
+        public string? Address { get; set; }
 
         public virtual ICollection<Invoice> Invoices { get; set; }
     }

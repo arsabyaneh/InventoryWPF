@@ -40,6 +40,7 @@ namespace Inventory.Core.ViewModels
             AddRoleCommand = new RelayCommand(AddRole);
             AddCustomerCommand = new RelayCommand(AddCustomer);
             AddInvoiceCommand = new RelayCommand(AddInvoice);
+            ViewProductsCommand = new RelayCommand(ViewProducts);
         }
 
         public ICommand AddProductCommand { get; }
@@ -47,10 +48,11 @@ namespace Inventory.Core.ViewModels
         public ICommand AddRoleCommand { get; }
         public ICommand AddCustomerCommand { get; }
         public ICommand AddInvoiceCommand { get; }
+        public ICommand ViewProductsCommand { get; }
 
         private void AddProduct()
         {
-            _ModalNavigationService.Navigate(() => new ProductViewModel(_ModalNavigationService, _ProductService)
+            _ModalNavigationService.Navigate(() => new ProductViewModel(_ModalNavigationService, _ProductService, null)
             {
                 ControlWidth = 700
             });
@@ -86,6 +88,11 @@ namespace Inventory.Core.ViewModels
             {
                 ControlWidth = 700
             });
+        }
+
+        private void ViewProducts()
+        {
+            _NavigationService.Navigate(() => new ProductsListViewModel(_NavigationService, _ProductService));
         }
     }
 }

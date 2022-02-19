@@ -13,5 +13,9 @@ namespace Inventory.Core.Services
         IEnumerable<Price> LoadPrices(long productId);
         Product LoadProduct(string code);
         decimal LoadProductSellPrice(string code);
+        long GetTotalNumberOfProductRecordsInDatabase();
+        IEnumerable<Product> LoadProductsFromDatabase(long skip, int count);
+        Task<long> GetTotalNumberOfProductRecordsInDatabase(string title = null);
+        Task<IEnumerable<Product>> LoadProductsFromDatabase(long skip, int count, string title = null);
     }
 }

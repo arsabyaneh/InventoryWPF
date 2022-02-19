@@ -31,7 +31,13 @@
     <Compile Update="Views\Layout\NavigationBarView.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Update="Views\ListPageView.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Update="Views\LoginView.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Update="Views\ProductsListView.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Update="Views\ProductView.xaml.cs">
@@ -87,7 +93,13 @@
     <Page Update="Views\Layout\NavigationBarView.xaml">
       <SubType>Designer</SubType>
     </Page>
+    <Page Update="Views\ListPageView.xaml">
+      <SubType>Designer</SubType>
+    </Page>
     <Page Update="Views\LoginView.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="Views\ProductsListView.xaml">
       <SubType>Designer</SubType>
     </Page>
     <Page Update="Views\ProductView.xaml">

@@ -61,5 +61,79 @@ namespace Inventory.Core.Services
             Product product = LoadProduct(code);
             return product.Prices.OrderByDescending(x => x.PriceDate).First().Sell;
         }
+
+        public long GetTotalNumberOfProductRecordsInDatabase()
+        {
+            using (UnitOfWork uow = new UnitOfWork())
+            {
+                return uow.ProductRepository.GetDbSet().LongCount();
+            }
+        }
+
+        public IEnumerable<Product> LoadProductsFromDatabase(long skip, int count)
+        {
+            IEnumerable<Product> products;
+
+            using (UnitOfWork uow = new UnitOfWork())
+            {
+                var query = uow.ProductRepository.GetDbSet().AsQueryable();
+
+                while (skip > int.MaxValue)
+                {
+                    query = query.Skip(int.MaxValue);
+                    skip = skip - int.MaxValue;
+                }
+                int skipInt = (int)skip;
+
+                products = query.OrderBy(x => x.Code)
+                    .Include(x => x.Brand)
+                    .Include(x => x.Prices)
+                    .Skip(skipInt).Take(count).ToList();
+            }
+
+            return products;
+        }
+
+        public async Task<long> GetTotalNumberOfProductRecordsInDatabase(string title = null)
+        {
+            using (UnitOfWork uow = new UnitOfWork())
+            {
+                if (!string.IsNullOrWhiteSpace(title))
+                    return uow.ProductRepository.GetDbSet().Where(x => x.Title == title).LongCount();
+                else
+                    return uow.ProductRepository.GetDbSet().LongCount();
+            }
+        }
+
+        public async Task<IEnumerable<Product>> LoadProductsFromDatabase(long skip, int count, string title = null)
+        {
+            IEnumerable<Product> products;
+
+            using (UnitOfWork uow = new UnitOfWork())
+            {
+                var query = uow.ProductRepository.GetDbSet().AsQueryable();
+
+                while (skip > int.MaxValue)
+                {
+                    query = query.Skip(int.MaxValue);
+                    skip = skip - int.MaxValue;
+                }
+                int skipInt = (int)skip;
+
+                if (!string.IsNullOrWhiteSpace(title))
+                    products = await query.OrderBy(x => x.Code)
+                    .Include(x => x.Brand)
+                    .Include(x => x.Prices)
+                    .Where(x => x.Title == title)
+                    .Skip(skipInt).Take(count).ToListAsync();
+                else
+                    products = await query.OrderBy(x => x.Code)
+                    .Include(x => x.Brand)
+                    .Include(x => x.Prices)
+                    .Skip(skipInt).Take(count).ToListAsync();
+            }
+
+            return products;
+        }
     }
 }

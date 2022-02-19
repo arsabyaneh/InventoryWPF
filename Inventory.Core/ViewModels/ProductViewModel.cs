@@ -22,13 +22,17 @@ namespace Inventory.Core.ViewModels
         private string _NewPriceBuy;
         private string _NewPriceSell;
         private DateTime _NewPriceDate = DateTime.Now;
+        private string _CurrentSellPrice;
+        private string _CurrentBuyPrice;
         private ObservableCollection<Price> _Prices = new ObservableCollection<Price>();
         private Product _Product;
 
-        public ProductViewModel(INavigationService navigationService, IProductService productService)
+        public ProductViewModel(INavigationService navigationService, IProductService productService, Product product)
         {
             _NavigationService = navigationService;
             _ProductService = productService;
+
+            Product = product;
 
             OkCommand = new RelayCommand(Ok);
             CancelCommand = new RelayCommand(Cancel);
@@ -41,6 +45,8 @@ namespace Inventory.Core.ViewModels
         public string NewPriceBuy { get => _NewPriceBuy; set => SetProperty(ref _NewPriceBuy, value); }
         public string NewPriceSell { get => _NewPriceSell; set=>SetProperty(ref _NewPriceSell, value); }
         public DateTime NewPriceDate { get => _NewPriceDate; set=>SetProperty(ref _NewPriceDate, value); }
+        public string CurrentSellPrice { get => _CurrentSellPrice; set => SetProperty(ref _CurrentSellPrice, value); }
+        public string CurrentBuyPrice { get => _CurrentBuyPrice; set => SetProperty(ref _CurrentBuyPrice, value); }
         public ObservableCollection<Price> Prices { get => _Prices; set => SetProperty(ref _Prices, value); }
 
         private ObservableCollection<Price> RemovedPrices { get; set; }
@@ -96,6 +102,10 @@ namespace Inventory.Core.ViewModels
                         ProductId = item.ProductId
                     });
                 }
+
+                var currentPrice = prices.OrderByDescending(x => x.PriceDate).FirstOrDefault();
+                CurrentBuyPrice = currentPrice?.Buy.ToString();
+                CurrentSellPrice = currentPrice?.Sell.ToString();
             }
 
             return pricesList;
