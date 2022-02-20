@@ -25,7 +25,7 @@ namespace Inventory.Core.ViewModels
         private string _ProductCode;
         private string _Quantity;
         private string _EmployeeName;
-        private decimal _TotalPrice;
+        private decimal? _TotalPrice = 0;
         private Employee _Employee;
         private ObservableCollection<InvoiceItemViewModel> _InvoiceItems = new ObservableCollection<InvoiceItemViewModel>();
         private Invoice _Invoice;
@@ -52,7 +52,7 @@ namespace Inventory.Core.ViewModels
         public string ProductCode { get => _ProductCode; set => SetProperty(ref _ProductCode, value); }
         public string Quantity { get => _Quantity; set => SetProperty(ref _Quantity, value); }
         public string EmployeeName { get => _EmployeeName; set => SetProperty(ref _EmployeeName, value); }
-        public decimal TotalPrice { get => _TotalPrice; set=> SetProperty(ref _TotalPrice, value); }
+        public decimal? TotalPrice { get => _TotalPrice; set=> SetProperty(ref _TotalPrice, value); }
         public ObservableCollection<InvoiceItemViewModel> InvoiceItemViewModels { get => _InvoiceItems; set => SetProperty(ref _InvoiceItems, value); }
 
         private ObservableCollection<InvoiceItemViewModel> RemovedInvoiceItems { get; set; }
@@ -79,7 +79,8 @@ namespace Inventory.Core.ViewModels
                     Id = _Invoice != null ? _Invoice.Id : 0,
                     Code = Code,
                     InvoiceDate = InvoiceDate != null ? InvoiceDate.Value : DateTime.Now,
-                    Discount = decimal.Parse(Discount), 
+                    Discount = decimal.Parse(Discount),
+                    TotalPrice = TotalPrice,
                     EmployeeId = Employee.Id,
                     CustomerId = _CustomerService.CashDeskCustomer.Id,
                     InvoiceItems = GetInvoiceItems(InvoiceItemViewModels)
@@ -95,6 +96,7 @@ namespace Inventory.Core.ViewModels
                 Code = _Invoice?.Code;
                 InvoiceDate = _Invoice?.InvoiceDate;
                 Discount = _Invoice?.Discount.ToString();
+                TotalPrice = _Invoice?.TotalPrice;
                 Employee = _Invoice != null ? _Invoice?.Employee : _AccountStore.CurrentAccount.Employee;
                 InvoiceItemViewModels = SetInvoiceItemViewModels(_Invoice?.InvoiceItems);
             }

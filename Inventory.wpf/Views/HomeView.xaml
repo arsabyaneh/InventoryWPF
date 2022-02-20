@@ -118,7 +118,13 @@
                         <Button Command="{Binding ViewProductsCommand}" HorizontalAlignment="Left" Style="{DynamicResource MenuButtonStyle}">
                             <StackPanel>
                                 <TextBlock Text="View Products" FontSize="{StaticResource FontSizeVeryLarge}" FontWeight="Bold" Margin="0 0 0 10"/>
-                                <TextBlock Text="view products list stored in the database" FontSize="{StaticResource FontSizeNormal}" TextWrapping="WrapWithOverflow"/>
+                                <TextBlock Text="view stored products list in the database" FontSize="{StaticResource FontSizeNormal}" TextWrapping="WrapWithOverflow"/>
+                            </StackPanel>
+                        </Button>
+                        <Button Command="{Binding ViewInvoicesCommand}" HorizontalAlignment="Left" Style="{DynamicResource MenuButtonStyle}">
+                            <StackPanel>
+                                <TextBlock Text="View Invoices" FontSize="{StaticResource FontSizeVeryLarge}" FontWeight="Bold" Margin="0 0 0 10"/>
+                                <TextBlock Text="view stored invoices list in the database" FontSize="{StaticResource FontSizeNormal}" TextWrapping="WrapWithOverflow"/>
                             </StackPanel>
                         </Button>
                     </WrapPanel>

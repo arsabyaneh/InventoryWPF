@@ -35,6 +35,9 @@
             <DataTemplate DataType="{x:Type viewmodels:ProductsListViewModel}">
                 <views:ProductsListView/>
             </DataTemplate>
+            <DataTemplate DataType="{x:Type viewmodels:InvoicesListViewModel}">
+                <views:InvoicesListView/>
+            </DataTemplate>
             <DataTemplate DataType="{x:Type viewmodels:LoginViewModel}">
                 <views:LoginView/>
             </DataTemplate>

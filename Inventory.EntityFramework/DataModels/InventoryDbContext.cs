@@ -46,6 +46,10 @@ namespace Inventory.EntityFramework.DataModels
                 .Property(e => e.Discount)
                 .HasPrecision(18, 0);
 
+            modelBuilder.Entity<Invoice>()
+                .Property(e => e.TotalPrice)
+                .HasPrecision(18, 0);
+
             modelBuilder.Entity<Price>()
                 .Property(e => e.Buy)
                 .HasPrecision(18, 0);

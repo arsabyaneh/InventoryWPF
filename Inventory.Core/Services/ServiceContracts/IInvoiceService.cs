@@ -10,5 +10,9 @@ namespace Inventory.Core.Services
     public interface IInvoiceService
     {
         void Save(Invoice invoice);
+        long GetTotalNumberOfInvoiceRecordsInDatabase();
+        IEnumerable<Invoice> LoadInvoicesFromDatabase(long skip, int count);
+        Task<long> GetTotalNumberOfInvoiceRecordsInDatabase(string code = null);
+        Task<IEnumerable<Invoice>> LoadInvoicesFromDatabase(long skip, int count, string code = null);
     }
 }

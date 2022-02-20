@@ -41,6 +41,7 @@ namespace Inventory.Core.ViewModels
             AddCustomerCommand = new RelayCommand(AddCustomer);
             AddInvoiceCommand = new RelayCommand(AddInvoice);
             ViewProductsCommand = new RelayCommand(ViewProducts);
+            ViewInvoicesCommand = new RelayCommand(ViewInvoices);
         }
 
         public ICommand AddProductCommand { get; }
@@ -49,6 +50,7 @@ namespace Inventory.Core.ViewModels
         public ICommand AddCustomerCommand { get; }
         public ICommand AddInvoiceCommand { get; }
         public ICommand ViewProductsCommand { get; }
+        public ICommand ViewInvoicesCommand { get; }
 
         private void AddProduct()
         {
@@ -93,6 +95,11 @@ namespace Inventory.Core.ViewModels
         private void ViewProducts()
         {
             _NavigationService.Navigate(() => new ProductsListViewModel(_NavigationService, _ProductService));
+        }
+
+        private void ViewInvoices()
+        {
+            _NavigationService.Navigate(() => new InvoicesListViewModel(_NavigationService, _InvoiceService, _ProductService, _CustomerService, _AccountStore));
         }
     }
 }
