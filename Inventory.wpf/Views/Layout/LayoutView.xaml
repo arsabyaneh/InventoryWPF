@@ -16,9 +16,9 @@
             <RowDefinition Height="auto"/>
         </Grid.RowDefinitions>
 
-        <views:NavigationBarView Grid.Row="0" DataContext="{Binding NavigationBarViewModel}" Height="30" 
+        <views:NavigationBarView Grid.Row="0" DataContext="{Binding NavigationBarViewModel}" Height="35" 
                                  Visibility="{Binding DataContext.IsNavigationBarVisible, Converter={StaticResource BooleanToVisibilityConverter}, RelativeSource={RelativeSource AncestorType=Grid}}"/>
         <ContentControl Grid.Row="1" Content="{Binding ContentViewModel}" Margin="10"/>
-        <views:LayoutFooterView Grid.Row="2" Height="30"/>
+        <views:LayoutFooterView Grid.Row="2" Height="35"/>
     </Grid>
 </UserControl>
