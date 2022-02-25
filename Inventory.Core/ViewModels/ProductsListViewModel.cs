@@ -6,20 +6,23 @@ using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Input;
 
 namespace Inventory.Core.ViewModels
 {
     public class ProductsListViewModel : BaseViewModel
     {
         private readonly INavigationService _NavigationService;
+        private readonly INavigationService _ModalNavigationService;
         private readonly IProductService _ProductService;
 
         private ObservableCollection<ProductViewModel> _ProductViewModels;
         private ListPageViewModel _ListPageViewModel;
 
-        public ProductsListViewModel(INavigationService navigationService, IProductService productService)
+        public ProductsListViewModel(INavigationService navigationService, INavigationService modalNavigationService, IProductService productService)
         {
             _NavigationService = navigationService;
+            _ModalNavigationService = modalNavigationService;
             _ProductService = productService;
 
             _ListPageViewModel = new ListPageViewModel();
@@ -41,7 +44,7 @@ namespace Inventory.Core.ViewModels
             {
                 foreach (var item in products)
                 {
-                    productViewModels.Add(new ProductViewModel(_NavigationService, _ProductService, item));
+                    productViewModels.Add(new ProductViewModel(_ModalNavigationService, _ProductService, item));
                 }
             }
 

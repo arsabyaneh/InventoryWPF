@@ -27,6 +27,19 @@
                       Margin="0 5">
                 <ListView.View>
                     <GridView>
+                        <GridViewColumn Width="auto">
+                            <GridViewColumn.CellTemplate>
+                                <DataTemplate>
+                                    <StackPanel Orientation="Horizontal">
+                                        <Button Content="&#xf002;" Margin="0 0 10 0" 
+                                                Command="{Binding ViewCommand}"
+                                                Style="{StaticResource IconButtonBlueStyle}"/>
+                                        <Button Content="&#xf1f8;" Margin="0 0 10 0"
+                                                Style="{StaticResource IconButtonRedStyle}"/>
+                                    </StackPanel>
+                                </DataTemplate>
+                            </GridViewColumn.CellTemplate>
+                        </GridViewColumn>
                         <GridViewColumn Header="Code" Width="150">
                             <GridViewColumn.CellTemplate>
                                 <DataTemplate>

@@ -140,7 +140,7 @@
                         </VisualStateManager.VisualStateGroups>
                         <Border x:Name="HeaderBorder" BorderThickness="0,1,0,1" Padding="3">
                             <Border.BorderBrush>
-                                <SolidColorBrush Color="{DynamicResource BorderDarkColor}" />
+                                <SolidColorBrush Color="{DynamicResource BorderLightColor}" />
                             </Border.BorderBrush>
                             <Border.Background>
                                 <SolidColorBrush Color="{DynamicResource BorderLightColor}" />
@@ -179,7 +179,7 @@
                                     <SolidColorBrush Color="{DynamicResource ControlLightColor}" />
                                 </Border.Background>
                                 <Border.BorderBrush>
-                                    <SolidColorBrush Color="{DynamicResource BorderDarkColor}" />
+                                    <SolidColorBrush Color="{DynamicResource BorderLightColor}" />
                                 </Border.BorderBrush>
                             </Border>
                         </ControlTemplate>
@@ -195,7 +195,7 @@
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="ListBoxItem">
-                    <Border x:Name="Border" Padding="5 5" SnapsToDevicePixels="true" 
+                    <Border x:Name="Border" Padding="5 7" SnapsToDevicePixels="true" 
                             BorderThickness="0, 0, 0, 1" BorderBrush="{StaticResource VeryLightGrayBrush}" Background="Transparent">
                         <VisualStateManager.VisualStateGroups>
                             <VisualStateGroup x:Name="CommonStates">

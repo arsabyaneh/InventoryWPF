@@ -12,7 +12,7 @@ namespace Inventory.Core.ViewModels
     {
         public event PropertyChangedEventHandler? PropertyChanged;
 
-        public double ControlWidth { get; set; } = 500.0;
+        public double ControlWidth { get; set; } = double.NaN;
         public ViewModelType ViewModelType { get; set; }
 
         protected void OnPropertyChanged([CallerMemberName] string? name = default)

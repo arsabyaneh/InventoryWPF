@@ -94,7 +94,7 @@ namespace Inventory.Core.ViewModels
 
         private void ViewProducts()
         {
-            _NavigationService.Navigate(() => new ProductsListViewModel(_NavigationService, _ProductService));
+            _NavigationService.Navigate(() => new ProductsListViewModel(_NavigationService, _ModalNavigationService, _ProductService));
         }
 
         private void ViewInvoices()

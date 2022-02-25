@@ -37,6 +37,7 @@ namespace Inventory.Core.ViewModels
             OkCommand = new RelayCommand(Ok);
             CancelCommand = new RelayCommand(Cancel);
             AddPriceCommand = new RelayCommand(AddPrice);
+            ViewCommand = new RelayCommand(View);
         }
 
         public string Title { get => _Title; set => SetProperty(ref _Title, value); }
@@ -54,6 +55,8 @@ namespace Inventory.Core.ViewModels
         public ICommand OkCommand { get; }
         public ICommand CancelCommand { get; }
         public ICommand AddPriceCommand { get; }
+        public ICommand ViewCommand { get; }
+        public ICommand DeleteCommand { get; }
 
         public Product Product
         {
@@ -93,7 +96,7 @@ namespace Inventory.Core.ViewModels
             {
                 foreach (var item in prices)
                 {
-                    Prices.Add(new Price
+                    pricesList.Add(new Price
                     {
                         Id = item.Id,
                         Buy = item.Buy,
@@ -146,6 +149,11 @@ namespace Inventory.Core.ViewModels
                 PriceDate = NewPriceDate,
                 EntityState = EntityState.Added
             });
+        }
+
+        private void View()
+        {
+            _NavigationService.Navigate(() => this);
         }
     }
 }
