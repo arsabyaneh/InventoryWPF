@@ -17,12 +17,12 @@
                 </Setter.Value>
             </Setter>
         </Style>
-        <SolidColorBrush x:Key="Button.Static.Background" Color="{StaticResource VeryLightPink}"/>
-        <SolidColorBrush x:Key="Button.Static.Border" Color="{StaticResource DarkPink}"/>
-        <SolidColorBrush x:Key="Button.MouseOver.Background" Color="{StaticResource LightPink}"/>
-        <SolidColorBrush x:Key="Button.MouseOver.Border" Color="{StaticResource DarkPink}"/>
-        <SolidColorBrush x:Key="Button.Pressed.Background" Color="{StaticResource LightRed}"/>
-        <SolidColorBrush x:Key="Button.Pressed.Border" Color="{StaticResource DarkPink}"/>
+        <SolidColorBrush x:Key="Button.Static.Background" Color="{StaticResource LightNicePurple}"/>
+        <SolidColorBrush x:Key="Button.Static.Border" Color="{StaticResource DarkNicePurple}"/>
+        <SolidColorBrush x:Key="Button.MouseOver.Background" Color="{StaticResource NicePurple}"/>
+        <SolidColorBrush x:Key="Button.MouseOver.Border" Color="{StaticResource DarkNicePurple}"/>
+        <SolidColorBrush x:Key="Button.Pressed.Background" Color="{StaticResource DarkNicePurple}"/>
+        <SolidColorBrush x:Key="Button.Pressed.Border" Color="{StaticResource DarkNicePurple}"/>
         <SolidColorBrush x:Key="Button.Disabled.Background" Color="#FFF4F4F4"/>
         <SolidColorBrush x:Key="Button.Disabled.Border" Color="#FFADB2B5"/>
         <SolidColorBrush x:Key="Button.Disabled.Foreground" Color="#FF838383"/>
@@ -76,54 +76,60 @@
     <Grid>
         <ScrollViewer HorizontalScrollBarVisibility="Disabled" VerticalScrollBarVisibility="Auto">
             <StackPanel>
-                <GroupBox Header="Add" FontSize="{StaticResource FontSizeVeryLarge}" 
+                <GroupBox FontSize="{StaticResource FontSizeVeryLarge}" 
                       BorderThickness="0" Padding="10 5">
+                    <GroupBox.Header>
+                        <TextBlock Text="Add" FontWeight="SemiBold"/>
+                    </GroupBox.Header>
                     <WrapPanel Orientation="Horizontal">
                         <Button Command="{Binding AddProductCommand}" HorizontalAlignment="Left" Style="{DynamicResource MenuButtonStyle}">
                             <StackPanel>
-                                <TextBlock Text="Add Product" FontSize="{StaticResource FontSizeVeryLarge}" FontWeight="Bold" Margin="0 0 0 10"/>
+                                <TextBlock Text="Add Product" FontSize="{StaticResource FontSizeVeryLarge}" FontWeight="SemiBold" Margin="0 0 0 10"/>
                                 <TextBlock Text="add a product to the database" FontSize="{StaticResource FontSizeNormal}" TextWrapping="WrapWithOverflow"/>
                             </StackPanel>
                         </Button>
                         <Button Command="{Binding AddEmployeeCommand}" HorizontalAlignment="Left" Style="{DynamicResource MenuButtonStyle}">
                             <StackPanel>
-                                <TextBlock Text="Add Employee" FontSize="{StaticResource FontSizeVeryLarge}" FontWeight="Bold" Margin="0 0 0 10"/>
+                                <TextBlock Text="Add Employee" FontSize="{StaticResource FontSizeVeryLarge}" FontWeight="SemiBold" Margin="0 0 0 10"/>
                                 <TextBlock Text="add an employee to the database" FontSize="{StaticResource FontSizeNormal}" TextWrapping="WrapWithOverflow"/>
                             </StackPanel>
                         </Button>
                         <Button Command="{Binding AddCustomerCommand}" HorizontalAlignment="Left" Style="{DynamicResource MenuButtonStyle}">
                             <StackPanel>
-                                <TextBlock Text="Add Customer" FontSize="{StaticResource FontSizeVeryLarge}" FontWeight="Bold" Margin="0 0 0 10"/>
+                                <TextBlock Text="Add Customer" FontSize="{StaticResource FontSizeVeryLarge}" FontWeight="SemiBold" Margin="0 0 0 10"/>
                                 <TextBlock Text="add a customer to the database" FontSize="{StaticResource FontSizeNormal}" TextWrapping="WrapWithOverflow"/>
                             </StackPanel>
                         </Button>
                         <Button Command="{Binding AddRoleCommand}" HorizontalAlignment="Left" Style="{DynamicResource MenuButtonStyle}">
                             <StackPanel>
-                                <TextBlock Text="Add Role" FontSize="{StaticResource FontSizeVeryLarge}" FontWeight="Bold" Margin="0 0 0 10"/>
+                                <TextBlock Text="Add Role" FontSize="{StaticResource FontSizeVeryLarge}" FontWeight="SemiBold" Margin="0 0 0 10"/>
                                 <TextBlock Text="add an employee role to the database" FontSize="{StaticResource FontSizeNormal}" TextWrapping="WrapWithOverflow"/>
                             </StackPanel>
                         </Button>
                         <Button Command="{Binding AddInvoiceCommand}" HorizontalAlignment="Left" Style="{DynamicResource MenuButtonStyle}">
                             <StackPanel>
-                                <TextBlock Text="Add Invoice" FontSize="{StaticResource FontSizeVeryLarge}" FontWeight="Bold" Margin="0 0 0 10"/>
+                                <TextBlock Text="Add Invoice" FontSize="{StaticResource FontSizeVeryLarge}" FontWeight="SemiBold" Margin="0 0 0 10"/>
                                 <TextBlock Text="add an invoice to the database" FontSize="{StaticResource FontSizeNormal}" TextWrapping="WrapWithOverflow"/>
                             </StackPanel>
                         </Button>
                     </WrapPanel>
                 </GroupBox>
 
-                <GroupBox Header="View" FontSize="{StaticResource FontSizeVeryLarge}" 
+                <GroupBox FontSize="{StaticResource FontSizeVeryLarge}" 
                       BorderThickness="0" Padding="10 5">
+                    <GroupBox.Header>
+                        <TextBlock Text="View" FontWeight="SemiBold"/>
+                    </GroupBox.Header>
                     <WrapPanel Orientation="Horizontal">
                         <Button Command="{Binding ViewProductsCommand}" HorizontalAlignment="Left" Style="{DynamicResource MenuButtonStyle}">
                             <StackPanel>
-                                <TextBlock Text="View Products" FontSize="{StaticResource FontSizeVeryLarge}" FontWeight="Bold" Margin="0 0 0 10"/>
+                                <TextBlock Text="View Products" FontSize="{StaticResource FontSizeVeryLarge}" FontWeight="SemiBold" Margin="0 0 0 10"/>
                                 <TextBlock Text="view stored products list in the database" FontSize="{StaticResource FontSizeNormal}" TextWrapping="WrapWithOverflow"/>
                             </StackPanel>
                         </Button>
                         <Button Command="{Binding ViewInvoicesCommand}" HorizontalAlignment="Left" Style="{DynamicResource MenuButtonStyle}">
                             <StackPanel>
-                                <TextBlock Text="View Invoices" FontSize="{StaticResource FontSizeVeryLarge}" FontWeight="Bold" Margin="0 0 0 10"/>
+                                <TextBlock Text="View Invoices" FontSize="{StaticResource FontSizeVeryLarge}" FontWeight="SemiBold" Margin="0 0 0 10"/>
                                 <TextBlock Text="view stored invoices list in the database" FontSize="{StaticResource FontSizeNormal}" TextWrapping="WrapWithOverflow"/>
                             </StackPanel>
                         </Button>

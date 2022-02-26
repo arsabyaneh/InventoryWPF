@@ -7,6 +7,24 @@
     <Color x:Key="Blue">#3791b7</Color>
     <SolidColorBrush x:Key="BlueBrush" Color="{StaticResource Blue}"/>
 
+    <Color x:Key="DarkSeaBlue">#7ca0a2</Color>
+    <SolidColorBrush x:Key="DarkSeaBlueBrush" Color="{StaticResource DarkSeaBlue}"/>
+
+    <Color x:Key="SeaBlue">#95b9bb</Color>
+    <SolidColorBrush x:Key="SeaBlueBrush" Color="{StaticResource SeaBlue}"/>
+
+    <Color x:Key="LightSeaBlue">#b8d0d2</Color>
+    <SolidColorBrush x:Key="LightSeaBlueBrush" Color="{StaticResource LightSeaBlue}"/>
+
+    <Color x:Key="DarkNicePurple">#ad6e8a</Color>
+    <SolidColorBrush x:Key="DarkNicePurpleBrush" Color="{StaticResource DarkNicePurple}"/>
+
+    <Color x:Key="NicePurple">#c89eb1</Color>
+    <SolidColorBrush x:Key="NicePurpleBrush" Color="{StaticResource NicePurple}"/>
+
+    <Color x:Key="LightNicePurple">#dabecb</Color>
+    <SolidColorBrush x:Key="LightNicePurpleBrush" Color="{StaticResource LightNicePurple}"/>
+
     <Color x:Key="VeryLightGray">#efefef</Color>
     <SolidColorBrush x:Key="VeryLightGrayBrush" Color="{StaticResource VeryLightGray}" />
 

@@ -6,7 +6,7 @@
              xmlns:views="clr-namespace:Inventory.wpf.Views"
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800"
-             Background="PaleVioletRed">
+             Background="{StaticResource DarkNicePurpleBrush}">
     <Grid>
         <TextBlock Text="Inventory Software Group" 
                    HorizontalAlignment="Right" VerticalAlignment="Center"
