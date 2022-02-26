@@ -1,4 +1,6 @@
-﻿using Inventory.Core.Services;
+﻿using Inventory.Core.Exceptions;
+using Inventory.Core.Services;
+using Inventory.Core.Stores;
 using Inventory.EntityFramework.DataModels;
 using Microsoft.EntityFrameworkCore;
 using System;
@@ -15,6 +17,7 @@ namespace Inventory.Core.ViewModels
     {
         private readonly INavigationService _NavigationService;
         private readonly IProductService _ProductService;
+        private readonly ProductStore _ProductStore;
 
         private string _Title;
         private string _Code;
@@ -27,10 +30,11 @@ namespace Inventory.Core.ViewModels
         private ObservableCollection<Price> _Prices = new ObservableCollection<Price>();
         private Product _Product;
 
-        public ProductViewModel(INavigationService navigationService, IProductService productService, Product product)
+        public ProductViewModel(INavigationService navigationService, IProductService productService, ProductStore productStore, Product product)
         {
             _NavigationService = navigationService;
             _ProductService = productService;
+            _ProductStore = productStore;
 
             Product = product;
 
@@ -38,6 +42,7 @@ namespace Inventory.Core.ViewModels
             CancelCommand = new RelayCommand(Cancel);
             AddPriceCommand = new RelayCommand(AddPrice);
             ViewCommand = new RelayCommand(View);
+            DeleteCommand = new RelayCommand(Delete);
         }
 
         public string Title { get => _Title; set => SetProperty(ref _Title, value); }
@@ -154,6 +159,22 @@ namespace Inventory.Core.ViewModels
         private void View()
         {
             _NavigationService.Navigate(() => this);
+        }
+
+        private void Delete()
+        {
+            if (_Product != null)
+            {
+                try
+                {
+                    _ProductService.Delete(_Product.Id);
+                    _ProductStore?.DeleteProduct(this);
+                }
+                catch (DatabaseException ex)
+                {
+                    string message = ex.Message;
+                }
+            }
         }
     }
 }

@@ -10,6 +10,7 @@ namespace Inventory.Core.Services
     public interface IProductService
     {
         void Save(Product product);
+        void Delete(long productId);
         IEnumerable<Price> LoadPrices(long productId);
         Product LoadProduct(string code);
         decimal LoadProductSellPrice(string code);

@@ -1,4 +1,5 @@
-﻿using Inventory.EntityFramework;
+﻿using Inventory.Core.Exceptions;
+using Inventory.EntityFramework;
 using Inventory.EntityFramework.DataModels;
 using Microsoft.EntityFrameworkCore;
 using System;
@@ -37,6 +38,25 @@ namespace Inventory.Core.Services
                 }
 
                 uow.Save();
+            }
+        }
+
+        public void Delete(long productId)
+        {
+            IEnumerable<Price> prices = LoadPrices(productId);
+
+            try
+            {
+                using (UnitOfWork uow = new UnitOfWork())
+                {
+                    uow.PriceRepository.Delete(prices);
+                    uow.ProductRepository.Delete(productId);
+                    uow.Save();
+                }
+            }
+            catch (Exception ex)
+            {
+                throw new DatabaseException("Could not delete product! \nThe product may be used in an invoice.", ex);
             }
         }
 
@@ -99,9 +119,9 @@ namespace Inventory.Core.Services
             using (UnitOfWork uow = new UnitOfWork())
             {
                 if (!string.IsNullOrWhiteSpace(title))
-                    return uow.ProductRepository.GetDbSet().Where(x => x.Title == title).LongCount();
+                    return await uow.ProductRepository.GetDbSet().Where(x => x.Title == title).LongCountAsync();
                 else
-                    return uow.ProductRepository.GetDbSet().LongCount();
+                    return await uow.ProductRepository.GetDbSet().LongCountAsync();
             }
         }
 

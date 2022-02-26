@@ -20,9 +20,11 @@ namespace Inventory.Core.ViewModels
         private readonly ICustomerService _CustomerService;
         private readonly IInvoiceService _InvoiceService;
         private readonly AccountStore _AccountStore;
+        private readonly Func<ProductStore> _CreateProductStore;
 
         public HomeViewModel(INavigationService navigationService, INavigationService modalNavigationService, IAuthenticationService authenticationService, IProductService productService, 
-            IEmployeeService employeeService, ICustomerService customerService, IInvoiceService invoiceService, AccountStore accountStore)
+            IEmployeeService employeeService, ICustomerService customerService, IInvoiceService invoiceService, 
+            AccountStore accountStore, Func<ProductStore> createProductStore)
         {
             _NavigationService = navigationService;
             _ModalNavigationService = modalNavigationService;
@@ -32,6 +34,7 @@ namespace Inventory.Core.ViewModels
             _CustomerService = customerService;
             _InvoiceService = invoiceService;
             _AccountStore = accountStore;
+            _CreateProductStore = createProductStore;
 
             ViewModelType = ViewModelType.Home;
 
@@ -54,7 +57,7 @@ namespace Inventory.Core.ViewModels
 
         private void AddProduct()
         {
-            _ModalNavigationService.Navigate(() => new ProductViewModel(_ModalNavigationService, _ProductService, null)
+            _ModalNavigationService.Navigate(() => new ProductViewModel(_ModalNavigationService, _ProductService, _CreateProductStore(), null)
             {
                 ControlWidth = 700
             });
@@ -94,7 +97,7 @@ namespace Inventory.Core.ViewModels
 
         private void ViewProducts()
         {
-            _NavigationService.Navigate(() => new ProductsListViewModel(_NavigationService, _ModalNavigationService, _ProductService));
+            _NavigationService.Navigate(() => new ProductsListViewModel(_NavigationService, _ModalNavigationService, _ProductService, _CreateProductStore));
         }
 
         private void ViewInvoices()

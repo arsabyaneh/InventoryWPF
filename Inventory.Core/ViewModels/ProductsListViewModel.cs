@@ -1,4 +1,5 @@
 ﻿using Inventory.Core.Services;
+using Inventory.Core.Stores;
 using Inventory.EntityFramework.DataModels;
 using System;
 using System.Collections.Generic;
@@ -15,15 +16,23 @@ namespace Inventory.Core.ViewModels
         private readonly INavigationService _NavigationService;
         private readonly INavigationService _ModalNavigationService;
         private readonly IProductService _ProductService;
+        private readonly ProductStore _ProductStore;
+        private readonly Func<ProductStore> _CreateProductStore;
 
         private ObservableCollection<ProductViewModel> _ProductViewModels;
         private ListPageViewModel _ListPageViewModel;
 
-        public ProductsListViewModel(INavigationService navigationService, INavigationService modalNavigationService, IProductService productService)
+        private string _Title;
+
+        public ProductsListViewModel(INavigationService navigationService, INavigationService modalNavigationService, IProductService productService, Func<ProductStore> createProductStore)
         {
             _NavigationService = navigationService;
             _ModalNavigationService = modalNavigationService;
             _ProductService = productService;
+            _CreateProductStore = createProductStore;
+            _ProductStore = _CreateProductStore();
+
+            _ProductStore.ProductDeleted += ProductStore_ProductDeleted;
 
             _ListPageViewModel = new ListPageViewModel();
             _ListPageViewModel.PageChanged += ListPageViewModel_PageChanged;
@@ -33,8 +42,9 @@ namespace Inventory.Core.ViewModels
         }
 
         public ProductViewModel SelectedProductViewModel { get; set; }
-        public ObservableCollection<ProductViewModel> ProductViewModels { get => _ProductViewModels; set=>SetProperty(ref _ProductViewModels, value); }
-        public ListPageViewModel ListPageViewModel { get => _ListPageViewModel; set =>SetProperty(ref _ListPageViewModel, value); }
+        public ObservableCollection<ProductViewModel> ProductViewModels { get => _ProductViewModels; set => SetProperty(ref _ProductViewModels, value); }
+        public ListPageViewModel ListPageViewModel { get => _ListPageViewModel; set => SetProperty(ref _ListPageViewModel, value); }
+        public string Title { get => _Title; set => SetProperty(ref _Title, value); }
 
         private ObservableCollection<ProductViewModel> GetProductViewModels(IEnumerable<Product> products)
         {
@@ -44,16 +54,24 @@ namespace Inventory.Core.ViewModels
             {
                 foreach (var item in products)
                 {
-                    productViewModels.Add(new ProductViewModel(_ModalNavigationService, _ProductService, item));
+                    productViewModels.Add(new ProductViewModel(_ModalNavigationService, _ProductService, _ProductStore, item));
                 }
             }
 
             return productViewModels;
         }
 
-        private void ListPageViewModel_PageChanged()
+        private async void ListPageViewModel_PageChanged()
         {
-            ProductViewModels = GetProductViewModels(_ProductService.LoadProductsFromDatabase((ListPageViewModel.CurrentPageNumber - 1) * ListPageViewModel.RowsPerPage, ListPageViewModel.RowsPerPage));
+            ProductViewModels = GetProductViewModels(await _ProductService.LoadProductsFromDatabase((ListPageViewModel.CurrentPageNumber - 1) * ListPageViewModel.RowsPerPage, ListPageViewModel.RowsPerPage, Title));
+            SelectedProductViewModel = null;
+        }
+
+        private async void ProductStore_ProductDeleted(ProductViewModel obj)
+        {
+            ListPageViewModel.CurrentPageNumber = 1;
+            ListPageViewModel.TotalNumberOfRecords = await _ProductService.GetTotalNumberOfProductRecordsInDatabase(Title);
+            ProductViewModels = GetProductViewModels(await _ProductService.LoadProductsFromDatabase((ListPageViewModel.CurrentPageNumber - 1) * ListPageViewModel.RowsPerPage, ListPageViewModel.RowsPerPage, Title));
             SelectedProductViewModel = null;
         }
     }
