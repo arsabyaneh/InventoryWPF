@@ -27,7 +27,7 @@ namespace Inventory.Core.ViewModels
         private string _ProductCode;
         private string _Quantity;
         private string _EmployeeName;
-        private decimal? _TotalPrice = 0;
+        private decimal? _TotalPrice;
         private Employee _Employee;
         private ObservableCollection<InvoiceItemViewModel> _InvoiceItems = new ObservableCollection<InvoiceItemViewModel>();
         private Invoice _Invoice;
@@ -57,7 +57,7 @@ namespace Inventory.Core.ViewModels
         public string ProductCode { get => _ProductCode; set => SetProperty(ref _ProductCode, value); }
         public string Quantity { get => _Quantity; set => SetProperty(ref _Quantity, value); }
         public string EmployeeName { get => _EmployeeName; set => SetProperty(ref _EmployeeName, value); }
-        public decimal? TotalPrice { get => _TotalPrice; set=> SetProperty(ref _TotalPrice, value); }
+        public decimal? TotalPrice { get => _TotalPrice; set => SetProperty(ref _TotalPrice, value); }
         public ObservableCollection<InvoiceItemViewModel> InvoiceItemViewModels { get => _InvoiceItems; set => SetProperty(ref _InvoiceItems, value); }
 
         private ObservableCollection<InvoiceItemViewModel> RemovedInvoiceItems { get; set; }
@@ -101,9 +101,9 @@ namespace Inventory.Core.ViewModels
                 _Invoice = value;
 
                 Code = _Invoice?.Code;
-                InvoiceDate = _Invoice?.InvoiceDate;
+                InvoiceDate = _Invoice != null ? _Invoice.InvoiceDate : DateTime.Now;
                 Discount = _Invoice?.Discount.ToString();
-                TotalPrice = _Invoice?.TotalPrice;
+                TotalPrice = _Invoice != null ? _Invoice.TotalPrice : 0;
                 Employee = _Invoice != null ? _Invoice?.Employee : _AccountStore.CurrentAccount.Employee;
                 InvoiceItemViewModels = SetInvoiceItemViewModels(_Invoice?.InvoiceItems);
             }
