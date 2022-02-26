@@ -1,4 +1,5 @@
-﻿using Inventory.EntityFramework;
+﻿using Inventory.Core.Exceptions;
+using Inventory.EntityFramework;
 using Inventory.EntityFramework.DataModels;
 using Microsoft.EntityFrameworkCore;
 using System;
@@ -24,6 +25,25 @@ namespace Inventory.Core.Services
                 }
 
                 uow.Save();
+            }
+        }
+
+        public async Task Delete(long invoiceId)
+        {
+            IEnumerable<InvoiceItem> invoiceItems = await LoadInvoiceItems(invoiceId);
+
+            try
+            {
+                using (UnitOfWork uow = new UnitOfWork())
+                {
+                    uow.InvoiceItemRepository.Delete(invoiceItems);
+                    uow.InvoiceRepository.Delete(invoiceId);
+                    await uow.SaveAsync();
+                }
+            }
+            catch (Exception ex)
+            {
+                throw new DatabaseException("Could not delete the invoice!", ex);
             }
         }
 

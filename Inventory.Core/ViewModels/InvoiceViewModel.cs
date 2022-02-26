@@ -1,4 +1,5 @@
-﻿using Inventory.Core.Services;
+﻿using Inventory.Core.Exceptions;
+using Inventory.Core.Services;
 using Inventory.Core.Stores;
 using Inventory.EntityFramework.DataModels;
 using System;
@@ -18,6 +19,7 @@ namespace Inventory.Core.ViewModels
         private readonly IProductService _ProductService;
         private readonly ICustomerService _CustomerService;
         private readonly AccountStore _AccountStore;
+        private readonly InvoiceStore _InvoiceStore;
 
         private string _Code;
         private DateTime? _InvoiceDate;
@@ -31,13 +33,14 @@ namespace Inventory.Core.ViewModels
         private Invoice _Invoice;
 
         public InvoiceViewModel(INavigationService navigationService, IInvoiceService invoiceService, IProductService productService, ICustomerService customerService, 
-            AccountStore accountStore, Invoice invoice)
+            AccountStore accountStore, InvoiceStore invoiceStore, Invoice invoice)
         {
             _NavigationService = navigationService;
             _InvoiceService = invoiceService;
             _ProductService = productService;
             _CustomerService = customerService;
             _AccountStore = accountStore;
+            _InvoiceStore = invoiceStore;
 
             Invoice = invoice;
 
@@ -45,6 +48,7 @@ namespace Inventory.Core.ViewModels
             CancelCommand = new RelayCommand(Cancel);
             AddProductCommand = new RelayCommand(AddProduct);
             ViewCommand = new RelayAsyncCommand(View, ex => throw ex);
+            DeleteCommand = new RelayAsyncCommand(Delete, ex => throw ex);
         }
 
         public string Code { get => _Code; set => SetProperty(ref _Code, value); }
@@ -71,6 +75,7 @@ namespace Inventory.Core.ViewModels
         public ICommand CancelCommand { get; }
         public ICommand AddProductCommand { get; }
         public ICommand ViewCommand { get; }
+        public ICommand DeleteCommand { get; }
 
         public Invoice Invoice
         {
@@ -191,6 +196,26 @@ namespace Inventory.Core.ViewModels
                 InvoiceItemViewModels = SetInvoiceItemViewModels(await _InvoiceService.LoadInvoiceItems(_Invoice.Id));
 
                 _NavigationService.Navigate(() => this);
+            }
+        }
+
+        private async Task Delete()
+        {
+            if (_Invoice != null)
+            {
+                try
+                {
+                    await _InvoiceService.Delete(_Invoice.Id);
+                    _InvoiceStore?.DeleteInvoice(this);
+                }
+                catch (DatabaseException ex)
+                {
+                    string message = ex.Message;
+                }
+                catch (Exception ex)
+                {
+                    string message = ex.Message;
+                }
             }
         }
     }

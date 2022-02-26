@@ -21,10 +21,11 @@ namespace Inventory.Core.ViewModels
         private readonly IInvoiceService _InvoiceService;
         private readonly AccountStore _AccountStore;
         private readonly Func<ProductStore> _CreateProductStore;
+        private readonly Func<InvoiceStore> _CreateInvoiceStore;
 
         public HomeViewModel(INavigationService navigationService, INavigationService modalNavigationService, IAuthenticationService authenticationService, IProductService productService, 
             IEmployeeService employeeService, ICustomerService customerService, IInvoiceService invoiceService, 
-            AccountStore accountStore, Func<ProductStore> createProductStore)
+            AccountStore accountStore, Func<ProductStore> createProductStore, Func<InvoiceStore> createInvoiceStore)
         {
             _NavigationService = navigationService;
             _ModalNavigationService = modalNavigationService;
@@ -35,6 +36,7 @@ namespace Inventory.Core.ViewModels
             _InvoiceService = invoiceService;
             _AccountStore = accountStore;
             _CreateProductStore = createProductStore;
+            _CreateInvoiceStore = createInvoiceStore;
 
             ViewModelType = ViewModelType.Home;
 
@@ -89,7 +91,7 @@ namespace Inventory.Core.ViewModels
 
         private void AddInvoice()
         {
-            _ModalNavigationService.Navigate(() => new InvoiceViewModel(_ModalNavigationService, _InvoiceService, _ProductService, _CustomerService, _AccountStore, null)
+            _ModalNavigationService.Navigate(() => new InvoiceViewModel(_ModalNavigationService, _InvoiceService, _ProductService, _CustomerService, _AccountStore, _CreateInvoiceStore(), null)
             {
                 ControlWidth = 700
             });
@@ -102,7 +104,7 @@ namespace Inventory.Core.ViewModels
 
         private void ViewInvoices()
         {
-            _NavigationService.Navigate(() => new InvoicesListViewModel(_NavigationService, _ModalNavigationService, _InvoiceService, _ProductService, _CustomerService, _AccountStore));
+            _NavigationService.Navigate(() => new InvoicesListViewModel(_NavigationService, _ModalNavigationService, _InvoiceService, _ProductService, _CustomerService, _AccountStore, _CreateInvoiceStore()));
         }
     }
 }
