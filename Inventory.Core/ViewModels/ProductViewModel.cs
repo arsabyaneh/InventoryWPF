@@ -18,6 +18,7 @@ namespace Inventory.Core.ViewModels
         private readonly INavigationService _NavigationService;
         private readonly IProductService _ProductService;
         private readonly ProductStore _ProductStore;
+        private readonly PriceStore _PriceStore;
 
         private string _Title;
         private string _Code;
@@ -27,14 +28,18 @@ namespace Inventory.Core.ViewModels
         private DateTime _NewPriceDate = DateTime.Now;
         private string _CurrentSellPrice;
         private string _CurrentBuyPrice;
-        private ObservableCollection<Price> _Prices = new ObservableCollection<Price>();
+        private ObservableCollection<PriceViewModel> _Prices = new ObservableCollection<PriceViewModel>();
         private Product _Product;
 
-        public ProductViewModel(INavigationService navigationService, IProductService productService, ProductStore productStore, Product product)
+        public ProductViewModel(INavigationService navigationService, IProductService productService, 
+            ProductStore productStore, PriceStore priceStore, Product product)
         {
             _NavigationService = navigationService;
             _ProductService = productService;
             _ProductStore = productStore;
+            _PriceStore = priceStore;
+
+            _PriceStore.PriceDeleted += PriceStore_PriceDeleted;
 
             Product = product;
 
@@ -49,13 +54,13 @@ namespace Inventory.Core.ViewModels
         public string Code { get => _Code; set => SetProperty(ref _Code, value); }
         public string BrandTitle { get => _BrandTitle; set => SetProperty(ref _BrandTitle, value); }
         public string NewPriceBuy { get => _NewPriceBuy; set => SetProperty(ref _NewPriceBuy, value); }
-        public string NewPriceSell { get => _NewPriceSell; set=>SetProperty(ref _NewPriceSell, value); }
-        public DateTime NewPriceDate { get => _NewPriceDate; set=>SetProperty(ref _NewPriceDate, value); }
+        public string NewPriceSell { get => _NewPriceSell; set => SetProperty(ref _NewPriceSell, value); }
+        public DateTime NewPriceDate { get => _NewPriceDate; set => SetProperty(ref _NewPriceDate, value); }
         public string CurrentSellPrice { get => _CurrentSellPrice; set => SetProperty(ref _CurrentSellPrice, value); }
         public string CurrentBuyPrice { get => _CurrentBuyPrice; set => SetProperty(ref _CurrentBuyPrice, value); }
-        public ObservableCollection<Price> Prices { get => _Prices; set => SetProperty(ref _Prices, value); }
+        public ObservableCollection<PriceViewModel> Prices { get => _Prices; set => SetProperty(ref _Prices, value); }
 
-        private ObservableCollection<Price> RemovedPrices { get; set; }
+        private ObservableCollection<PriceViewModel> RemovedPrices { get; set; } = new ObservableCollection<PriceViewModel>();
 
         public ICommand OkCommand { get; }
         public ICommand CancelCommand { get; }
@@ -93,21 +98,17 @@ namespace Inventory.Core.ViewModels
             }
         }
 
-        private ObservableCollection<Price> SetPrices(ICollection<Price> prices)
+        private ObservableCollection<PriceViewModel> SetPrices(ICollection<Price> prices)
         {
-            ObservableCollection<Price> pricesList = new ObservableCollection<Price>();
+            ObservableCollection<PriceViewModel> pricesList = new ObservableCollection<PriceViewModel>();
 
             if (prices != null)
             {
                 foreach (var item in prices)
                 {
-                    pricesList.Add(new Price
+                    pricesList.Add(new PriceViewModel(_PriceStore)
                     {
-                        Id = item.Id,
-                        Buy = item.Buy,
-                        Sell = item.Sell,
-                        PriceDate = item.PriceDate,
-                        ProductId = item.ProductId
+                        Price = item
                     });
                 }
 
@@ -119,15 +120,27 @@ namespace Inventory.Core.ViewModels
             return pricesList;
         }
 
-        private ICollection<Price> GetPrices(ObservableCollection<Price> prices)
+        private ICollection<Price> GetPrices(ObservableCollection<PriceViewModel> prices)
         {
-            List<Price> pricesList = new List<Price>(prices);
+            List<Price> pricesList = new List<Price>();
 
             if (RemovedPrices != null)
             {
                 foreach (var item in RemovedPrices)
                 {
-                    pricesList.Add(item);
+                    pricesList.Add(new Price
+                    {
+                        Id = item.Id,
+                        EntityState = EntityState.Deleted
+                    });
+                }
+            }
+
+            if (prices != null)
+            {
+                foreach (var item in prices)
+                {
+                    pricesList.Add(item.Price);
                 }
             }
 
@@ -137,23 +150,32 @@ namespace Inventory.Core.ViewModels
         private void Ok()
         {
             _ProductService.Save(Product);
+            _ProductStore?.UpdateProduct(this);
             _NavigationService.Close();
         }
 
         private void Cancel()
         {
+            _ProductStore?.UpdateProduct(this);
             _NavigationService.Close();
         }
 
         private void AddPrice()
         {
-            Prices.Add(new Price
+            Prices.Add(new PriceViewModel(_PriceStore)
             {
                 Buy = decimal.Parse(NewPriceBuy),
                 Sell = decimal.Parse(NewPriceSell),
-                PriceDate = NewPriceDate,
-                EntityState = EntityState.Added
+                PriceDate = NewPriceDate
             });
+        }
+
+        private void PriceStore_PriceDeleted(PriceViewModel priceViewModel)
+        {
+            Prices.Remove(priceViewModel);
+
+            if (priceViewModel.Id != 0)
+                RemovedPrices.Add(priceViewModel);
         }
 
         private void View()

@@ -18,21 +18,25 @@ namespace Inventory.Core.ViewModels
         private readonly IProductService _ProductService;
         private readonly ProductStore _ProductStore;
         private readonly Func<ProductStore> _CreateProductStore;
+        private readonly Func<PriceStore> _CreatePriceStore;
 
         private ObservableCollection<ProductViewModel> _ProductViewModels;
         private ListPageViewModel _ListPageViewModel;
 
         private string _Title;
 
-        public ProductsListViewModel(INavigationService navigationService, INavigationService modalNavigationService, IProductService productService, Func<ProductStore> createProductStore)
+        public ProductsListViewModel(INavigationService navigationService, INavigationService modalNavigationService, IProductService productService, 
+            Func<ProductStore> createProductStore, Func<PriceStore> createPriceStore)
         {
             _NavigationService = navigationService;
             _ModalNavigationService = modalNavigationService;
             _ProductService = productService;
             _CreateProductStore = createProductStore;
             _ProductStore = _CreateProductStore();
+            _CreatePriceStore = createPriceStore;
 
             _ProductStore.ProductDeleted += ProductStore_ProductDeleted;
+            _ProductStore.ProductUpdated += ProductStore_ProductUpdated;
 
             _ListPageViewModel = new ListPageViewModel();
             _ListPageViewModel.PageChanged += ListPageViewModel_PageChanged;
@@ -54,7 +58,7 @@ namespace Inventory.Core.ViewModels
             {
                 foreach (var item in products)
                 {
-                    productViewModels.Add(new ProductViewModel(_ModalNavigationService, _ProductService, _ProductStore, item));
+                    productViewModels.Add(new ProductViewModel(_ModalNavigationService, _ProductService, _ProductStore, _CreatePriceStore(), item));
                 }
             }
 
@@ -73,6 +77,11 @@ namespace Inventory.Core.ViewModels
             ListPageViewModel.TotalNumberOfRecords = await _ProductService.GetTotalNumberOfProductRecordsInDatabase(Title);
             ProductViewModels = GetProductViewModels(await _ProductService.LoadProductsFromDatabase((ListPageViewModel.CurrentPageNumber - 1) * ListPageViewModel.RowsPerPage, ListPageViewModel.RowsPerPage, Title));
             SelectedProductViewModel = null;
+        }
+
+        private void ProductStore_ProductUpdated(ProductViewModel obj)
+        {
+            ListPageViewModel_PageChanged();
         }
     }
 }

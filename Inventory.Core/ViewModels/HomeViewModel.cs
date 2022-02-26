@@ -23,10 +23,11 @@ namespace Inventory.Core.ViewModels
         private readonly Func<ProductStore> _CreateProductStore;
         private readonly Func<InvoiceStore> _CreateInvoiceStore;
         private readonly Func<InvoiceItemStore> _CreateInvoiceItemStore;
+        private readonly Func<PriceStore> _CreatePriceStore;
 
         public HomeViewModel(INavigationService navigationService, INavigationService modalNavigationService, IAuthenticationService authenticationService, IProductService productService, 
             IEmployeeService employeeService, ICustomerService customerService, IInvoiceService invoiceService, 
-            AccountStore accountStore, Func<ProductStore> createProductStore, Func<InvoiceStore> createInvoiceStore, Func<InvoiceItemStore> createInvoiceItemStore)
+            AccountStore accountStore, Func<ProductStore> createProductStore, Func<InvoiceStore> createInvoiceStore, Func<InvoiceItemStore> createInvoiceItemStore, Func<PriceStore> createPriceStore)
         {
             _NavigationService = navigationService;
             _ModalNavigationService = modalNavigationService;
@@ -39,6 +40,8 @@ namespace Inventory.Core.ViewModels
             _CreateProductStore = createProductStore;
             _CreateInvoiceStore = createInvoiceStore;
             _CreateInvoiceItemStore = createInvoiceItemStore;
+            _CreatePriceStore = createPriceStore;
+
             ViewModelType = ViewModelType.Home;
 
             AddProductCommand = new RelayCommand(AddProduct);
@@ -60,7 +63,7 @@ namespace Inventory.Core.ViewModels
 
         private void AddProduct()
         {
-            _ModalNavigationService.Navigate(() => new ProductViewModel(_ModalNavigationService, _ProductService, _CreateProductStore(), null)
+            _ModalNavigationService.Navigate(() => new ProductViewModel(_ModalNavigationService, _ProductService, _CreateProductStore(), _CreatePriceStore(), null)
             {
                 ControlWidth = 700
             });
@@ -100,7 +103,7 @@ namespace Inventory.Core.ViewModels
 
         private void ViewProducts()
         {
-            _NavigationService.Navigate(() => new ProductsListViewModel(_NavigationService, _ModalNavigationService, _ProductService, _CreateProductStore));
+            _NavigationService.Navigate(() => new ProductsListViewModel(_NavigationService, _ModalNavigationService, _ProductService, _CreateProductStore, _CreatePriceStore));
         }
 
         private void ViewInvoices()
