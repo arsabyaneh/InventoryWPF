@@ -16,6 +16,13 @@ namespace Inventory.Core.Services
             using (UnitOfWork uow = new UnitOfWork())
             {
                 uow.InvoiceRepository.Update(invoice);
+
+                foreach (var item in invoice.InvoiceItems)
+                {
+                    if (item.EntityState == EntityState.Deleted)
+                        uow.SetEntryState(item, EntityState.Deleted);
+                }
+
                 uow.Save();
             }
         }
@@ -92,6 +99,16 @@ namespace Inventory.Core.Services
             }
 
             return invoices;
+        }
+
+        public async Task<IEnumerable<InvoiceItem>> LoadInvoiceItems(long invoiceId)
+        {
+            using (UnitOfWork uow = new UnitOfWork())
+            {
+                return uow.InvoiceItemRepository.GetDbSet()
+                    .Include(x => x.Product).Where(x => x.InvoiceId == invoiceId)
+                    .OrderBy(x => x.Id).ToList();
+            }
         }
     }
 }

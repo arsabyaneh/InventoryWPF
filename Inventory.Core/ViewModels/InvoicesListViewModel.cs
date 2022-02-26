@@ -13,6 +13,7 @@ namespace Inventory.Core.ViewModels
     public class InvoicesListViewModel : BaseViewModel
     {
         private readonly INavigationService _NavigationService;
+        private readonly INavigationService _ModalNavigationService;
         private readonly IInvoiceService _InvoiceService;
         private readonly IProductService _ProductService;
         private readonly ICustomerService _CustomerService;
@@ -21,9 +22,10 @@ namespace Inventory.Core.ViewModels
         private ObservableCollection<InvoiceViewModel> _InvoiceViewModels;
         private ListPageViewModel _ListPageViewModel;
 
-        public InvoicesListViewModel(INavigationService navigationService, IInvoiceService invoiceService, IProductService productService, ICustomerService customerService, AccountStore accountStore)
+        public InvoicesListViewModel(INavigationService navigationService, INavigationService modalNavigationService, IInvoiceService invoiceService, IProductService productService, ICustomerService customerService, AccountStore accountStore)
         {
             _NavigationService = navigationService;
+            _ModalNavigationService = modalNavigationService;
             _InvoiceService = invoiceService;
             _ProductService = productService;
             _CustomerService = customerService;
@@ -48,7 +50,7 @@ namespace Inventory.Core.ViewModels
             {
                 foreach (var item in invoices)
                 {
-                    invoiceViewModels.Add(new InvoiceViewModel(_NavigationService, _InvoiceService, _ProductService, _CustomerService, _AccountStore, item));
+                    invoiceViewModels.Add(new InvoiceViewModel(_ModalNavigationService, _InvoiceService, _ProductService, _CustomerService, _AccountStore, item));
                 }
             }
 

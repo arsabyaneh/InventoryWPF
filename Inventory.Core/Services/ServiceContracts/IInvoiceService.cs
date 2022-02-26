@@ -14,5 +14,6 @@ namespace Inventory.Core.Services
         IEnumerable<Invoice> LoadInvoicesFromDatabase(long skip, int count);
         Task<long> GetTotalNumberOfInvoiceRecordsInDatabase(string code = null);
         Task<IEnumerable<Invoice>> LoadInvoicesFromDatabase(long skip, int count, string code = null);
+        Task<IEnumerable<InvoiceItem>> LoadInvoiceItems(long invoiceId);
     }
 }

@@ -44,6 +44,7 @@ namespace Inventory.Core.ViewModels
             OkCommand = new RelayCommand(Ok);
             CancelCommand = new RelayCommand(Cancel);
             AddProductCommand = new RelayCommand(AddProduct);
+            ViewCommand = new RelayAsyncCommand(View, ex => throw ex);
         }
 
         public string Code { get => _Code; set => SetProperty(ref _Code, value); }
@@ -69,6 +70,7 @@ namespace Inventory.Core.ViewModels
         public ICommand OkCommand { get; }
         public ICommand CancelCommand { get; }
         public ICommand AddProductCommand { get; }
+        public ICommand ViewCommand { get; }
 
         public Invoice Invoice
         {
@@ -154,6 +156,18 @@ namespace Inventory.Core.ViewModels
         {
             List<InvoiceItem> invoiceItems = new List<InvoiceItem>();
 
+            if (RemovedInvoiceItems != null)
+            {
+                foreach (var item in RemovedInvoiceItems)
+                {
+                    invoiceItems.Add(new InvoiceItem
+                    {
+                        Id = item.Id,
+                        EntityState = Microsoft.EntityFrameworkCore.EntityState.Deleted
+                    });
+                }
+            }
+
             if (invoiceItemViewModels != null)
             {
                 foreach (var item in invoiceItemViewModels)
@@ -168,6 +182,16 @@ namespace Inventory.Core.ViewModels
             }
 
             return invoiceItems;
+        }
+
+        private async Task View()
+        {
+            if (_Invoice != null)
+            {
+                InvoiceItemViewModels = SetInvoiceItemViewModels(await _InvoiceService.LoadInvoiceItems(_Invoice.Id));
+
+                _NavigationService.Navigate(() => this);
+            }
         }
     }
 }

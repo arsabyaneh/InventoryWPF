@@ -102,7 +102,7 @@ namespace Inventory.Core.ViewModels
 
         private void ViewInvoices()
         {
-            _NavigationService.Navigate(() => new InvoicesListViewModel(_NavigationService, _InvoiceService, _ProductService, _CustomerService, _AccountStore));
+            _NavigationService.Navigate(() => new InvoicesListViewModel(_NavigationService, _ModalNavigationService, _InvoiceService, _ProductService, _CustomerService, _AccountStore));
         }
     }
 }
