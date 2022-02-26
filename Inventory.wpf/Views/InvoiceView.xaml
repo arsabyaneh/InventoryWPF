@@ -59,6 +59,15 @@
                           ItemsSource="{Binding InvoiceItemViewModels}">
                     <ListView.View>
                         <GridView>
+                            <GridViewColumn Width="auto">
+                                <GridViewColumn.CellTemplate>
+                                    <DataTemplate>
+                                        <Button Content="&#xf1f8;" Margin="0 0 10 0"
+                                                Command="{Binding DeleteCommand}"
+                                                Style="{StaticResource IconButtonRedStyle}"/>
+                                    </DataTemplate>
+                                </GridViewColumn.CellTemplate>
+                            </GridViewColumn>
                             <GridViewColumn Header="Product" Width="150">
                                 <GridViewColumn.CellTemplate>
                                     <DataTemplate>

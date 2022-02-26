@@ -42,7 +42,7 @@ namespace Inventory.Core.ViewModels
             CancelCommand = new RelayCommand(Cancel);
             AddPriceCommand = new RelayCommand(AddPrice);
             ViewCommand = new RelayCommand(View);
-            DeleteCommand = new RelayCommand(Delete);
+            DeleteCommand = new RelayParameterizedCommand(Delete);
         }
 
         public string Title { get => _Title; set => SetProperty(ref _Title, value); }
@@ -161,16 +161,22 @@ namespace Inventory.Core.ViewModels
             _NavigationService.Navigate(() => this);
         }
 
-        private void Delete()
+        private void Delete(object parameter)
         {
             if (_Product != null)
             {
                 try
                 {
-                    _ProductService.Delete(_Product.Id);
+                    if (bool.Parse(parameter?.ToString()) == true)
+                        _ProductService.Delete(_Product.Id);
+                    
                     _ProductStore?.DeleteProduct(this);
                 }
                 catch (DatabaseException ex)
+                {
+                    string message = ex.Message;
+                }
+                catch (Exception ex)
                 {
                     string message = ex.Message;
                 }

@@ -23,8 +23,6 @@ namespace Inventory.EntityFramework.DataModels
 
         public decimal Discount { get; set; }
 
-        public decimal? TotalPrice { get; set; }
-
         public long CustomerId { get; set; }
 
         public long EmployeeId { get; set; }

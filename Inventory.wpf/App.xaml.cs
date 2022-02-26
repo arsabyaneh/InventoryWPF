@@ -24,6 +24,7 @@ namespace Inventory.wpf
             AccountStore accountStore = new AccountStore();
             Func<ProductStore> createProductStore = () => new ProductStore();
             Func<InvoiceStore> createInvoiceStore = () => new InvoiceStore();
+            Func<InvoiceItemStore> createInvoiceItemStore = () => new InvoiceItemStore();
             NavigationService navigationService = new NavigationService(navigationStore, navService => new NavigationBarViewModel(navService, accountStore));
             ModalNavigationService modalNavigationService = new ModalNavigationService(modalNavigationStore);
             ProductService productService = new ProductService();
@@ -34,7 +35,7 @@ namespace Inventory.wpf
             MainViewModel mainViewModel = new MainViewModel(navigationStore, modalNavigationStore);
 
             HomeViewModel homeViewModel = new HomeViewModel(navigationService, modalNavigationService, authenticationService, productService, employeeService, customerService, invoiceService, 
-                accountStore, createProductStore, createInvoiceStore);
+                accountStore, createProductStore, createInvoiceStore, createInvoiceItemStore);
             LoginViewModel loginViewModel = new LoginViewModel(navigationService, authenticationService, homeViewModel, accountStore);
             navigationService.Navigate(() => loginViewModel);
 

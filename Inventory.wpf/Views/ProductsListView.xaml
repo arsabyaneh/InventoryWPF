@@ -35,7 +35,7 @@
                                                 Command="{Binding ViewCommand}"
                                                 Style="{StaticResource IconButtonBlueStyle}"/>
                                         <Button Content="&#xf1f8;" Margin="0 0 10 0"
-                                                Command="{Binding DeleteCommand}"
+                                                Command="{Binding DeleteCommand}" CommandParameter="True"
                                                 Style="{StaticResource IconButtonRedStyle}"/>
                                     </StackPanel>
                                 </DataTemplate>

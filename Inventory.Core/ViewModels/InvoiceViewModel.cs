@@ -20,6 +20,7 @@ namespace Inventory.Core.ViewModels
         private readonly ICustomerService _CustomerService;
         private readonly AccountStore _AccountStore;
         private readonly InvoiceStore _InvoiceStore;
+        private readonly InvoiceItemStore _InvoiceItemStore;
 
         private string _Code;
         private DateTime? _InvoiceDate;
@@ -27,13 +28,13 @@ namespace Inventory.Core.ViewModels
         private string _ProductCode;
         private string _Quantity;
         private string _EmployeeName;
-        private decimal? _TotalPrice;
+        private decimal? _TotalPrice = 0;
         private Employee _Employee;
         private ObservableCollection<InvoiceItemViewModel> _InvoiceItems = new ObservableCollection<InvoiceItemViewModel>();
         private Invoice _Invoice;
 
         public InvoiceViewModel(INavigationService navigationService, IInvoiceService invoiceService, IProductService productService, ICustomerService customerService, 
-            AccountStore accountStore, InvoiceStore invoiceStore, Invoice invoice)
+            AccountStore accountStore, InvoiceStore invoiceStore, InvoiceItemStore invoiceItemStore, Invoice invoice)
         {
             _NavigationService = navigationService;
             _InvoiceService = invoiceService;
@@ -41,6 +42,9 @@ namespace Inventory.Core.ViewModels
             _CustomerService = customerService;
             _AccountStore = accountStore;
             _InvoiceStore = invoiceStore;
+            _InvoiceItemStore = invoiceItemStore;
+
+            _InvoiceItemStore.InvoiceItemDeleted += InvoiceStore_InvoiceItemDeleted;
 
             Invoice = invoice;
 
@@ -60,7 +64,7 @@ namespace Inventory.Core.ViewModels
         public decimal? TotalPrice { get => _TotalPrice; set => SetProperty(ref _TotalPrice, value); }
         public ObservableCollection<InvoiceItemViewModel> InvoiceItemViewModels { get => _InvoiceItems; set => SetProperty(ref _InvoiceItems, value); }
 
-        private ObservableCollection<InvoiceItemViewModel> RemovedInvoiceItems { get; set; }
+        private ObservableCollection<InvoiceItemViewModel> RemovedInvoiceItems { get; set; } = new ObservableCollection<InvoiceItemViewModel>();
         private Employee Employee
         {
             get => _Employee;
@@ -87,7 +91,6 @@ namespace Inventory.Core.ViewModels
                     Code = Code,
                     InvoiceDate = InvoiceDate != null ? InvoiceDate.Value : DateTime.Now,
                     Discount = decimal.Parse(Discount),
-                    TotalPrice = TotalPrice,
                     EmployeeId = Employee.Id,
                     CustomerId = _CustomerService.CashDeskCustomer.Id,
                     InvoiceItems = GetInvoiceItems(InvoiceItemViewModels)
@@ -103,7 +106,6 @@ namespace Inventory.Core.ViewModels
                 Code = _Invoice?.Code;
                 InvoiceDate = _Invoice != null ? _Invoice.InvoiceDate : DateTime.Now;
                 Discount = _Invoice?.Discount.ToString();
-                TotalPrice = _Invoice != null ? _Invoice.TotalPrice : 0;
                 Employee = _Invoice != null ? _Invoice?.Employee : _AccountStore.CurrentAccount.Employee;
                 InvoiceItemViewModels = SetInvoiceItemViewModels(_Invoice?.InvoiceItems);
             }
@@ -112,11 +114,13 @@ namespace Inventory.Core.ViewModels
         private void Ok()
         {
             _InvoiceService.Save(Invoice);
+            _InvoiceStore.UpdateInvoice(this);
             _NavigationService.Close();
         }
 
         private void Cancel()
         {
+            _InvoiceStore.UpdateInvoice(this);
             _NavigationService.Close();
         }
 
@@ -126,7 +130,7 @@ namespace Inventory.Core.ViewModels
             if (product != null)
             {
                 decimal price = int.Parse(Quantity) * product.Prices.OrderByDescending(x => x.PriceDate).First().Sell;
-                InvoiceItemViewModels.Add(new InvoiceItemViewModel
+                InvoiceItemViewModels.Add(new InvoiceItemViewModel(_InvoiceItemStore)
                 {
                     Product = product,
                     Quantity = Quantity,
@@ -136,21 +140,34 @@ namespace Inventory.Core.ViewModels
             }
         }
 
+        private void InvoiceStore_InvoiceItemDeleted(InvoiceItemViewModel invoiceItemViewModel)
+        {
+            InvoiceItemViewModels.Remove(invoiceItemViewModel);
+            TotalPrice -= decimal.Parse(invoiceItemViewModel.Price);
+
+            if (invoiceItemViewModel.Id != 0)
+                RemovedInvoiceItems.Add(invoiceItemViewModel);
+        }
+
         private ObservableCollection<InvoiceItemViewModel> SetInvoiceItemViewModels(IEnumerable<InvoiceItem> invoiceItems)
         {
             ObservableCollection<InvoiceItemViewModel> invoiceItemViewModels = new ObservableCollection<InvoiceItemViewModel>();
             
             if (invoiceItems != null)
             {
+                TotalPrice = 0;
                 foreach (var item in invoiceItems)
                 {
-                    invoiceItemViewModels.Add(new InvoiceItemViewModel
+                    decimal price = item.Quantity * _ProductService.LoadProductSellPrice(item.Product.Code);
+
+                    invoiceItemViewModels.Add(new InvoiceItemViewModel(_InvoiceItemStore)
                     {
                         Id = item.Id,
                         Product = item.Product,
                         Quantity = item.Quantity.ToString(),
-                        Price = _ProductService.LoadProductSellPrice(item.Product.Code).ToString()
+                        Price = price.ToString()
                     });
+                    TotalPrice = TotalPrice + price;
                 }
             }
 

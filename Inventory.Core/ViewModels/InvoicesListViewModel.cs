@@ -19,13 +19,14 @@ namespace Inventory.Core.ViewModels
         private readonly ICustomerService _CustomerService;
         private readonly AccountStore _AccountStore;
         private readonly InvoiceStore _InvoiceStore;
+        private readonly Func<InvoiceItemStore> _CreateInvoiceItemStore;
 
         private ObservableCollection<InvoiceViewModel> _InvoiceViewModels;
         private ListPageViewModel _ListPageViewModel;
         private string _Title;
 
         public InvoicesListViewModel(INavigationService navigationService, INavigationService modalNavigationService, IInvoiceService invoiceService, IProductService productService, ICustomerService customerService, 
-            AccountStore accountStore, InvoiceStore invoiceStore)
+            AccountStore accountStore, InvoiceStore invoiceStore, Func<InvoiceItemStore> createInvoiceItemStore)
         {
             _NavigationService = navigationService;
             _ModalNavigationService = modalNavigationService;
@@ -34,8 +35,10 @@ namespace Inventory.Core.ViewModels
             _CustomerService = customerService;
             _AccountStore = accountStore;
             _InvoiceStore = invoiceStore;
+            _CreateInvoiceItemStore = createInvoiceItemStore;
 
             _InvoiceStore.InvoiceDeleted += InvoiceStore_InvoiceDeleted;
+            _InvoiceStore.InvoiceUpdated += InvoiceStore_InvoiceUpdated;
 
             _ListPageViewModel = new ListPageViewModel();
             _ListPageViewModel.PageChanged += ListPageViewModel_PageChanged;
@@ -57,7 +60,7 @@ namespace Inventory.Core.ViewModels
             {
                 foreach (var item in invoices)
                 {
-                    invoiceViewModels.Add(new InvoiceViewModel(_ModalNavigationService, _InvoiceService, _ProductService, _CustomerService, _AccountStore, _InvoiceStore, item));
+                    invoiceViewModels.Add(new InvoiceViewModel(_ModalNavigationService, _InvoiceService, _ProductService, _CustomerService, _AccountStore, _InvoiceStore, _CreateInvoiceItemStore(), item));
                 }
             }
 
@@ -76,6 +79,11 @@ namespace Inventory.Core.ViewModels
             ListPageViewModel.TotalNumberOfRecords = await _InvoiceService.GetTotalNumberOfInvoiceRecordsInDatabase(Title);
             InvoiceViewModels = GetInvoiceViewModels(await _InvoiceService.LoadInvoicesFromDatabase((ListPageViewModel.CurrentPageNumber - 1) * ListPageViewModel.RowsPerPage, ListPageViewModel.RowsPerPage, Title));
             SelectedInvoiceViewModel = null;
+        }
+
+        private void InvoiceStore_InvoiceUpdated(InvoiceViewModel invoiceViewModel)
+        {
+            ListPageViewModel_PageChanged();
         }
     }
 }
