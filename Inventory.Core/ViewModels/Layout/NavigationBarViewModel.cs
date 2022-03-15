@@ -19,10 +19,14 @@ namespace Inventory.Core.ViewModels
             _NavigationService = navigationService;
             _AccountStore = accountStore;
 
+            _AccountStore.CurrentAccountChanged += AccountStore_CurrentAccountChanged;
+
             GoBackCommand = new RelayCommand(GoBack);
             GoHomeCommand = new RelayCommand(GoHome);
             LogoutCommand = new RelayCommand(Logout);
         }
+
+        public string LoggedInUserFullName { get => _AccountStore?.CurrentAccount?.FullName; }
 
         public ICommand GoBackCommand { get; }
         public ICommand GoHomeCommand { get; }
@@ -42,6 +46,11 @@ namespace Inventory.Core.ViewModels
         {
             _AccountStore.Logout();
             _NavigationService.Logout();
+        }
+
+        private void AccountStore_CurrentAccountChanged()
+        {
+            OnPropertyChanged(LoggedInUserFullName);
         }
     }
 }

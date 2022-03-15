@@ -14,12 +14,15 @@
         </Grid.ColumnDefinitions>
         
         <StackPanel Grid.Column="0" Orientation="Horizontal">
-            <Button Content="&#xf060;" Command="{Binding GoBackCommand}" Style="{StaticResource IconButtonStyle}"/>
-            <Button Content="&#xf015;" Command="{Binding GoHomeCommand}" Style="{StaticResource IconButtonStyle}"/>
+            <Button Content="&#xf060;" ToolTip="Go back" Command="{Binding GoBackCommand}" Style="{StaticResource IconButtonStyle}"/>
+            <Button Content="&#xf015;" ToolTip="Go to home menu" Command="{Binding GoHomeCommand}" Style="{StaticResource IconButtonStyle}"/>
         </StackPanel>
 
         <StackPanel Grid.Column="1" Orientation="Horizontal" HorizontalAlignment="Right">
-            <Button Content="&#xf08b;" Command="{Binding LogoutCommand}" Style="{StaticResource IconButtonStyle}"/>
+            <TextBlock Text="{Binding LoggedInUserFullName}" 
+                       FontSize="{StaticResource FontSizeNormal}" Foreground="White"
+                       VerticalAlignment="Center" Margin="0, 0, 10, 0"/>
+            <Button Content="&#xf08b;" ToolTip="Log out" Command="{Binding LogoutCommand}" Style="{StaticResource IconButtonStyle}"/>
         </StackPanel>
     </Grid>
 </UserControl>

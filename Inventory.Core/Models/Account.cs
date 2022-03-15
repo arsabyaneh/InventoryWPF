@@ -11,6 +11,7 @@ namespace Inventory.Core.Models
     {
         public string FirstName { get => Employee?.FirstName; }
         public string LastName { get => Employee?.LastName; }
+        public string FullName { get => $"{LastName}, {FirstName}"; }
 
         public Employee Employee { get; set; }
     }
