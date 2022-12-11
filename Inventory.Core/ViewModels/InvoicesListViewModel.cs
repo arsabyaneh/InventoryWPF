@@ -1,4 +1,5 @@
-﻿using Inventory.Core.Services;
+﻿using Inventory.Core.Factories;
+using Inventory.Core.Services;
 using Inventory.Core.Stores;
 using Inventory.EntityFramework.DataModels;
 using System;
@@ -20,13 +21,16 @@ namespace Inventory.Core.ViewModels
         private readonly AccountStore _AccountStore;
         private readonly InvoiceStore _InvoiceStore;
         private readonly Func<InvoiceItemStore> _CreateInvoiceItemStore;
+        private readonly IViewModelFactory _ViewModelFactory;
 
         private ObservableCollection<InvoiceViewModel> _InvoiceViewModels;
         private ListPageViewModel _ListPageViewModel;
         private string _Title;
 
-        public InvoicesListViewModel(INavigationService navigationService, INavigationService modalNavigationService, IInvoiceService invoiceService, IProductService productService, ICustomerService customerService, 
-            AccountStore accountStore, InvoiceStore invoiceStore, Func<InvoiceItemStore> createInvoiceItemStore)
+        public InvoicesListViewModel(INavigationService navigationService, INavigationService modalNavigationService, 
+            IInvoiceService invoiceService, IProductService productService, ICustomerService customerService, 
+            AccountStore accountStore, InvoiceStore invoiceStore, Func<InvoiceItemStore> createInvoiceItemStore,
+            IViewModelFactory viewModelFactory)
         {
             _NavigationService = navigationService;
             _ModalNavigationService = modalNavigationService;
@@ -36,6 +40,7 @@ namespace Inventory.Core.ViewModels
             _AccountStore = accountStore;
             _InvoiceStore = invoiceStore;
             _CreateInvoiceItemStore = createInvoiceItemStore;
+            _ViewModelFactory = viewModelFactory;
 
             _InvoiceStore.InvoiceDeleted += InvoiceStore_InvoiceDeleted;
             _InvoiceStore.InvoiceUpdated += InvoiceStore_InvoiceUpdated;
@@ -60,7 +65,11 @@ namespace Inventory.Core.ViewModels
             {
                 foreach (var item in invoices)
                 {
-                    invoiceViewModels.Add(new InvoiceViewModel(_ModalNavigationService, _InvoiceService, _ProductService, _CustomerService, _AccountStore, _InvoiceStore, _CreateInvoiceItemStore(), item));
+                    if (_ViewModelFactory.CreateViewModel(Base.ViewType.Invoice) is InvoiceViewModel invoiceViewModel)
+                    {
+                        invoiceViewModel.Initialise(_InvoiceStore, Microsoft.EntityFrameworkCore.EntityState.Modified, item);
+                        invoiceViewModels.Add(invoiceViewModel);
+                    }
                 }
             }
 

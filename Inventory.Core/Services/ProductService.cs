@@ -5,21 +5,27 @@ using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace Inventory.Core.Services
 {
     public class ProductService : IProductService
     {
-        public void Save(Product product)
+        private readonly Func<IUnitOfWork> _CreateUnitOfWork;
+
+        public ProductService(Func<IUnitOfWork> createUnitOfWork)
+        {
+            _CreateUnitOfWork = createUnitOfWork;
+        }
+
+        public void Save(Product? product)
         {
             if (product == null)
                 return;
 
             IEnumerable<Price> prices = LoadPrices(product.Id);
 
-            using (UnitOfWork uow = new UnitOfWork())
+            using (IUnitOfWork uow = _CreateUnitOfWork())
             {
                 Brand brand = uow.InsertIfNotExists(uow.BrandRepository, product.Brand, x => x.Title == product.Brand.Title && x.Address == product.Brand.Address);
 
@@ -47,7 +53,7 @@ namespace Inventory.Core.Services
 
             try
             {
-                using (UnitOfWork uow = new UnitOfWork())
+                using (IUnitOfWork uow = _CreateUnitOfWork())
                 {
                     uow.PriceRepository.Delete(prices);
                     uow.ProductRepository.Delete(productId);
@@ -62,7 +68,7 @@ namespace Inventory.Core.Services
 
         public IEnumerable<Price> LoadPrices(long productId)
         {
-            using (UnitOfWork uow = new UnitOfWork())
+            using (IUnitOfWork uow = _CreateUnitOfWork())
             {
                 return uow.PriceRepository.Get(filter: x => x.ProductId == productId, orderBy: o => o.OrderByDescending(x => x.PriceDate));
             }
@@ -70,7 +76,7 @@ namespace Inventory.Core.Services
 
         public Product LoadProduct(string code)
         {
-            using (UnitOfWork uow = new UnitOfWork())
+            using (IUnitOfWork uow = _CreateUnitOfWork())
             {
                 return uow.ProductRepository.GetDbSet().Include(x => x.Prices).Where(x => x.Code == code).FirstOrDefault();
             }
@@ -84,7 +90,7 @@ namespace Inventory.Core.Services
 
         public long GetTotalNumberOfProductRecordsInDatabase()
         {
-            using (UnitOfWork uow = new UnitOfWork())
+            using (IUnitOfWork uow = _CreateUnitOfWork())
             {
                 return uow.ProductRepository.GetDbSet().LongCount();
             }
@@ -94,7 +100,7 @@ namespace Inventory.Core.Services
         {
             IEnumerable<Product> products;
 
-            using (UnitOfWork uow = new UnitOfWork())
+            using (IUnitOfWork uow = _CreateUnitOfWork())
             {
                 var query = uow.ProductRepository.GetDbSet().AsQueryable();
 
@@ -116,7 +122,7 @@ namespace Inventory.Core.Services
 
         public async Task<long> GetTotalNumberOfProductRecordsInDatabase(string title = null)
         {
-            using (UnitOfWork uow = new UnitOfWork())
+            using (IUnitOfWork uow = _CreateUnitOfWork())
             {
                 if (!string.IsNullOrWhiteSpace(title))
                     return await uow.ProductRepository.GetDbSet().Where(x => x.Title == title).LongCountAsync();
@@ -129,7 +135,7 @@ namespace Inventory.Core.Services
         {
             IEnumerable<Product> products;
 
-            using (UnitOfWork uow = new UnitOfWork())
+            using (IUnitOfWork uow = _CreateUnitOfWork())
             {
                 var query = uow.ProductRepository.GetDbSet().AsQueryable();
 

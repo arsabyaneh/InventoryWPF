@@ -1,15 +1,12 @@
 ﻿using Inventory.EntityFramework.DataModels;
 using Microsoft.EntityFrameworkCore;
 using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Linq.Expressions;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace Inventory.EntityFramework
 {
-    public interface IUnitOfWork
+    public interface IUnitOfWork : IDisposable
     {
         Repository<Brand> BrandRepository { get; }
         Repository<Customer> CustomerRepository { get; }

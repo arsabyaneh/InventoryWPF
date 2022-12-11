@@ -12,6 +12,6 @@ namespace Inventory.Core.Services
         IEnumerable<Role> LoadAllRoles();
         Task Save(Employee employee);
         void Save(Role role);
-        Task<Employee> LoadEmployee(string username);
+        Task<Employee?> LoadEmployee(string username);
     }
 }

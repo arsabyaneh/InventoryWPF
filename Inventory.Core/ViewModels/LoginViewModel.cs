@@ -2,6 +2,7 @@
 using Inventory.Core.Models;
 using Inventory.Core.Services;
 using Inventory.Core.Stores;
+using Inventory.Core.ViewModels.Base;
 using Inventory.EntityFramework.DataModels;
 using System;
 using System.Collections.Generic;
@@ -29,7 +30,7 @@ namespace Inventory.Core.ViewModels
             _HomeViewModel = homeViewModel;
             _AccountStore = accountStore;
 
-            ViewModelType = ViewModelType.Login;
+            ViewModelType = ViewType.Login;
             ErrorMessageViewModel = new MessageViewModel();
 
             LoginCommand = new RelayAsyncCommand(Login, ex => throw ex);

@@ -23,7 +23,7 @@ namespace Inventory.Core.Services
 
         public async Task<Employee> Login(string username, string password)
         {
-            Employee loadedEmployee = await _EmployeeService.LoadEmployee(username);
+            Employee? loadedEmployee = await _EmployeeService.LoadEmployee(username);
 
             if (loadedEmployee == null)
             {
@@ -49,7 +49,7 @@ namespace Inventory.Core.Services
                 result = RegistrationResult.PasswordsDoNotMatch;
             }
 
-            Employee foundEmployee = await _EmployeeService.LoadEmployee(employee.Username);
+            Employee? foundEmployee = await _EmployeeService.LoadEmployee(employee.Username);
             if (foundEmployee != null)
             {
                 result = RegistrationResult.UsernameAlreadyExists;

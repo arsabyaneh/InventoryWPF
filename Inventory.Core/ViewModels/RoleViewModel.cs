@@ -1,24 +1,19 @@
 ﻿using Inventory.Core.Services;
 using Inventory.EntityFramework.DataModels;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Input;
 
 namespace Inventory.Core.ViewModels
 {
     public class RoleViewModel : BaseViewModel
     {
-        private readonly INavigationService _NavigationService;
+        private readonly IModalNavigationService _ModalNavigationService;
         private readonly IEmployeeService _EmployeeService;
 
         private string _Title;
 
-        public RoleViewModel(INavigationService navigationService, IEmployeeService employeeService)
+        public RoleViewModel(IModalNavigationService modalNavigationService, IEmployeeService employeeService)
         {
-            _NavigationService = navigationService;
+            _ModalNavigationService = modalNavigationService;
             _EmployeeService = employeeService;
 
             OkCommand = new RelayCommand(Ok);
@@ -36,12 +31,12 @@ namespace Inventory.Core.ViewModels
             {
                 Title = Title
             });
-            _NavigationService.Close();
+            _ModalNavigationService.Close();
         }
 
         private void Cancel()
         {
-            _NavigationService.Close();
+            _ModalNavigationService.Close();
         }
     }
 }

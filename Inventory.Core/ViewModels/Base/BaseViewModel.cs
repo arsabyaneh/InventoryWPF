@@ -1,19 +1,19 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using Inventory.Core.Stores;
+using Inventory.Core.ViewModels.Base;
+using Microsoft.EntityFrameworkCore;
 using System.ComponentModel;
-using System.Linq;
 using System.Runtime.CompilerServices;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace Inventory.Core.ViewModels
 {
-    public class BaseViewModel : INotifyPropertyChanged
+    public abstract class BaseViewModel : INotifyPropertyChanged, IViewModel
     {
         public event PropertyChangedEventHandler? PropertyChanged;
 
         public double ControlWidth { get; set; } = double.NaN;
-        public ViewModelType ViewModelType { get; set; }
+        public ViewType ViewModelType { get; set; } = ViewType.None;
+        public EntityState EntityState { get; set; }
 
         protected void OnPropertyChanged([CallerMemberName] string? name = default)
         {
@@ -31,6 +31,11 @@ namespace Inventory.Core.ViewModels
             OnPropertyChanged(propertyName);
             
             return true;
+        }
+
+        public virtual async Task<BaseViewModel> Initialise(IStore store, EntityState entityState, object? entity = null)
+        {
+            return await Task.FromResult(this);
         }
     }
 

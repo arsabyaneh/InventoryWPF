@@ -1,13 +1,10 @@
-﻿using Inventory.Core.Services;
-using Inventory.Core.Stores;
+﻿using Inventory.Core;
+using Inventory.Core.Services;
 using Inventory.Core.ViewModels;
-using Microsoft.AspNet.Identity;
-using System;
-using System.Collections.Generic;
-using System.Configuration;
-using System.Data;
-using System.Linq;
-using System.Threading.Tasks;
+using Inventory.EntityFramework;
+using Inventory.wpf.Extensions;
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Hosting;
 using System.Windows;
 
 namespace Inventory.wpf
@@ -17,27 +14,27 @@ namespace Inventory.wpf
     /// </summary>
     public partial class App : Application
     {
+        private readonly IHost _host;
+
+        public App()
+        {
+            _host = CreateHostBuilder().Build();
+        }
+
+        public static IHostBuilder CreateHostBuilder(string[] args = null)
+        {
+            return Host.CreateDefaultBuilder(args)
+                .AddConfiguration()
+                .AddInfrastructureServices()
+                .AddCoreServices();
+        }
+
         protected override void OnStartup(StartupEventArgs e)
         {
-            NavigationStore navigationStore = new NavigationStore();
-            ModalNavigationStore modalNavigationStore = new ModalNavigationStore();
-            AccountStore accountStore = new AccountStore();
-            Func<ProductStore> createProductStore = () => new ProductStore();
-            Func<InvoiceStore> createInvoiceStore = () => new InvoiceStore();
-            Func<InvoiceItemStore> createInvoiceItemStore = () => new InvoiceItemStore();
-            Func<PriceStore> createPriceStore = () => new PriceStore();
-            NavigationService navigationService = new NavigationService(navigationStore, navService => new NavigationBarViewModel(navService, accountStore));
-            ModalNavigationService modalNavigationService = new ModalNavigationService(modalNavigationStore);
-            ProductService productService = new ProductService();
-            EmployeeService employeeService = new EmployeeService();
-            CustomerService customerService = new CustomerService();
-            InvoiceService invoiceService = new InvoiceService();
-            AuthenticationService authenticationService = new AuthenticationService(employeeService, new PasswordHasher());
-            MainViewModel mainViewModel = new MainViewModel(navigationStore, modalNavigationStore);
+            var navigationService = _host.Services.GetRequiredService<INavigationService>();
+            var loginViewModel    = _host.Services.GetRequiredService<LoginViewModel>();
+            var mainViewModel     = _host.Services.GetRequiredService<MainViewModel>();
 
-            HomeViewModel homeViewModel = new HomeViewModel(navigationService, modalNavigationService, authenticationService, productService, employeeService, customerService, invoiceService, 
-                accountStore, createProductStore, createInvoiceStore, createInvoiceItemStore, createPriceStore);
-            LoginViewModel loginViewModel = new LoginViewModel(navigationService, authenticationService, homeViewModel, accountStore);
             navigationService.Navigate(() => loginViewModel);
 
             MainWindow = new MainWindow()

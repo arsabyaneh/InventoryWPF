@@ -1,47 +1,43 @@
 ﻿using Inventory.Core.Services;
 using Inventory.EntityFramework.DataModels;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Input;
 
 namespace Inventory.Core.ViewModels
 {
     public class CustomerViewModel : BaseViewModel
     {
-        private readonly INavigationService _NavigationService;
+        private readonly IModalNavigationService _ModalNavigationService;
         private readonly ICustomerService _CustomerService;
 
-        private string _Code;
-        private string _FirstName;
-        private string _LastName;
+        private string? _Code;
+        private string? _FirstName;
+        private string? _LastName;
         private int _Gender;
         private DateTime? _BirthDate;
-        private string _Email;
-        private string _Telephone;
-        private string _Address;
+        private string? _Email;
+        private string? _Telephone;
+        private string? _Address;
 
         private Customer _Customer;
 
-        public CustomerViewModel(INavigationService navigationService, ICustomerService customerService)
+        public CustomerViewModel(IModalNavigationService modalNavigationService, ICustomerService customerService)
         {
-            _NavigationService = navigationService;
+            _ModalNavigationService = modalNavigationService;
             _CustomerService = customerService;
 
             OkCommand = new RelayCommand(Ok);
             CancelCommand = new RelayCommand(Cancel);
         }
 
-        public string Code { get => _Code; set => SetProperty(ref _Code, value); }
-        public string FirstName { get => _FirstName; set => SetProperty(ref _FirstName, value); }
-        public string LastName { get => _LastName; set => SetProperty(ref _LastName, value); }
+        public string? Code { get => _Code; set => SetProperty(ref _Code, value); }
+        public string? FirstName { get => _FirstName; set => SetProperty(ref _FirstName, value); }
+        public string? LastName { get => _LastName; set => SetProperty(ref _LastName, value); }
         public int Gender { get => _Gender; set => SetProperty(ref _Gender, value); }
         public DateTime? BirthDate { get => _BirthDate; set => SetProperty(ref _BirthDate, value); }
-        public string Email { get => _Email; set => SetProperty(ref _Email, value); }
-        public string Telephone { get => _Telephone; set => SetProperty(ref _Telephone, value); }
-        public string Address { get => _Address; set => SetProperty(ref _Address, value); }
+        public string? Email { get => _Email; set => SetProperty(ref _Email, value); }
+        public string? Telephone { get => _Telephone; set => SetProperty(ref _Telephone, value); }
+        public string? Address { get => _Address; set => SetProperty(ref _Address, value); }
 
         public ICommand OkCommand { get; }
         public ICommand CancelCommand { get; }
@@ -53,13 +49,13 @@ namespace Inventory.Core.ViewModels
                 _Customer = new Customer
                 {
                     Id = _Customer != null ? _Customer.Id : 0,
-                    Code = Code,
-                    FirstName = FirstName,
-                    LastName = LastName,
+                    Code = Code ?? string.Empty,
+                    FirstName = FirstName ?? string.Empty,
+                    LastName = LastName ?? string.Empty,
                     Gender = Gender == 0 ? false : true,
-                    BirthDate = BirthDate.Value,
-                    Email = Email,
-                    Telephone = Telephone,
+                    BirthDate = BirthDate != null ? BirthDate.Value : DateTime.UtcNow,
+                    Email = Email ?? string.Empty,
+                    Telephone = Telephone ?? string.Empty,
                     Address = Address
                 };
 
@@ -84,12 +80,12 @@ namespace Inventory.Core.ViewModels
         private void Ok()
         {
             _CustomerService.Save(Customer);
-            _NavigationService.Close();
+            _ModalNavigationService.Close();
         }
 
         private void Cancel()
         {
-            _NavigationService.Close();
+            _ModalNavigationService.Close();
         }
     }
 }

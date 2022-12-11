@@ -1,4 +1,5 @@
 ﻿using Inventory.Core.ViewModels;
+using Inventory.Core.ViewModels.Base;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -52,7 +53,7 @@ namespace Inventory.Core.Stores
 
         public void NavigateHome()
         {
-            while (_ViewModelsStack.Peek()?.ViewModelType != ViewModelType.Home)
+            while (_ViewModelsStack.Peek()?.ViewModelType != ViewType.Home)
             {
                 _ViewModelsStack.Pop();
             }
@@ -62,7 +63,7 @@ namespace Inventory.Core.Stores
 
         public void Logout()
         {
-            while (_ViewModelsStack.Peek()?.ViewModelType != ViewModelType.Login)
+            while (_ViewModelsStack.Peek()?.ViewModelType != ViewType.Login)
             {
                 _ViewModelsStack.Pop();
             }

@@ -1,13 +1,9 @@
 ﻿using Inventory.Core.ViewModels;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Inventory.Core.Stores
 {
-    public class InvoiceStore
+    public class InvoiceStore : IStore
     {
         public event Action<InvoiceViewModel> InvoiceDeleted;
         public event Action<InvoiceViewModel> InvoiceUpdated;

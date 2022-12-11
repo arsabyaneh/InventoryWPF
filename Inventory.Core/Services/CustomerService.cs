@@ -1,17 +1,22 @@
 ﻿using Inventory.EntityFramework;
 using Inventory.EntityFramework.DataModels;
 using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Inventory.Core.Services
 {
     public class CustomerService : ICustomerService
     {
-        private Customer _CashDeskCustomer;
-        public Customer CashDeskCustomer 
+        private readonly Func<IUnitOfWork> _CreateUnitOfWork;
+
+        private Customer? _CashDeskCustomer;
+
+        public CustomerService(Func<IUnitOfWork> createUnitOfWork)
+        {
+            _CreateUnitOfWork = createUnitOfWork ?? throw new ArgumentNullException(nameof(createUnitOfWork));
+        }
+
+        public Customer? CashDeskCustomer 
         { 
             get
             {
@@ -24,16 +29,16 @@ namespace Inventory.Core.Services
 
         public void Save(Customer customer)
         {
-            using (UnitOfWork uow = new UnitOfWork())
+            using (IUnitOfWork uow = _CreateUnitOfWork())
             {
                 uow.CustomerRepository.Update(customer);
                 uow.Save();
             }
         }
 
-        public Customer LoadCashDeskCustomer(string code)
+        public Customer? LoadCashDeskCustomer(string code)
         {
-            using (UnitOfWork uow = new UnitOfWork())
+            using (IUnitOfWork uow = _CreateUnitOfWork())
             {
                 return uow.CustomerRepository.Get(filter: x => x.Code == code).FirstOrDefault();
             }

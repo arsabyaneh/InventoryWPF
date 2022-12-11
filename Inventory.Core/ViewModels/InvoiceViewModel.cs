@@ -2,11 +2,11 @@
 using Inventory.Core.Services;
 using Inventory.Core.Stores;
 using Inventory.EntityFramework.DataModels;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Input;
 
@@ -14,13 +14,14 @@ namespace Inventory.Core.ViewModels
 {
     public class InvoiceViewModel : BaseViewModel
     {
-        private readonly INavigationService _NavigationService;
+        private readonly IModalNavigationService _ModalNavigationService;
         private readonly IInvoiceService _InvoiceService;
         private readonly IProductService _ProductService;
         private readonly ICustomerService _CustomerService;
         private readonly AccountStore _AccountStore;
-        private readonly InvoiceStore _InvoiceStore;
         private readonly InvoiceItemStore _InvoiceItemStore;
+
+        private InvoiceStore? _InvoiceStore;
 
         private string _Code;
         private DateTime? _InvoiceDate;
@@ -29,24 +30,21 @@ namespace Inventory.Core.ViewModels
         private string _Quantity;
         private string _EmployeeName;
         private decimal? _TotalPrice = 0;
-        private Employee _Employee;
+        private Employee? _Employee;
         private ObservableCollection<InvoiceItemViewModel> _InvoiceItems = new ObservableCollection<InvoiceItemViewModel>();
-        private Invoice _Invoice;
+        private Invoice? _Invoice;
 
-        public InvoiceViewModel(INavigationService navigationService, IInvoiceService invoiceService, IProductService productService, ICustomerService customerService, 
-            AccountStore accountStore, InvoiceStore invoiceStore, InvoiceItemStore invoiceItemStore, Invoice invoice)
+        public InvoiceViewModel(IModalNavigationService modalNavigationService, IInvoiceService invoiceService, IProductService productService, ICustomerService customerService, 
+            AccountStore accountStore, InvoiceItemStore invoiceItemStore)
         {
-            _NavigationService = navigationService;
+            _ModalNavigationService = modalNavigationService;
             _InvoiceService = invoiceService;
             _ProductService = productService;
             _CustomerService = customerService;
             _AccountStore = accountStore;
-            _InvoiceStore = invoiceStore;
             _InvoiceItemStore = invoiceItemStore;
 
             _InvoiceItemStore.InvoiceItemDeleted += InvoiceStore_InvoiceItemDeleted;
-
-            Invoice = invoice;
 
             OkCommand = new RelayCommand(Ok);
             CancelCommand = new RelayCommand(Cancel);
@@ -55,9 +53,18 @@ namespace Inventory.Core.ViewModels
             DeleteCommand = new RelayAsyncCommand(Delete, ex => throw ex);
         }
 
-        public string Code { get => _Code; set => SetProperty(ref _Code, value); }
+        public override Task<BaseViewModel> Initialise(IStore store, EntityState entityState, object? entity = null)
+        {
+            _InvoiceStore = store is InvoiceStore invoiceStore ? invoiceStore : null;
+            EntityState = entityState;
+            Invoice = entity is Invoice invoice ? invoice : null;
+
+            return base.Initialise(store, entityState, entity);
+        }
+
+        public string? Code { get => _Code; set => SetProperty(ref _Code, value); }
         public DateTime? InvoiceDate { get => _InvoiceDate; set => SetProperty(ref _InvoiceDate, value); }
-        public string Discount { get => _Discount; set => SetProperty(ref _Discount, value); }
+        public string? Discount { get => _Discount; set => SetProperty(ref _Discount, value); }
         public string ProductCode { get => _ProductCode; set => SetProperty(ref _ProductCode, value); }
         public string Quantity { get => _Quantity; set => SetProperty(ref _Quantity, value); }
         public string EmployeeName { get => _EmployeeName; set => SetProperty(ref _EmployeeName, value); }
@@ -65,7 +72,7 @@ namespace Inventory.Core.ViewModels
         public ObservableCollection<InvoiceItemViewModel> InvoiceItemViewModels { get => _InvoiceItems; set => SetProperty(ref _InvoiceItems, value); }
 
         private ObservableCollection<InvoiceItemViewModel> RemovedInvoiceItems { get; set; } = new ObservableCollection<InvoiceItemViewModel>();
-        private Employee Employee
+        private Employee? Employee
         {
             get => _Employee;
             set
@@ -81,18 +88,18 @@ namespace Inventory.Core.ViewModels
         public ICommand ViewCommand { get; }
         public ICommand DeleteCommand { get; }
 
-        public Invoice Invoice
+        public Invoice? Invoice
         {
             get
             {
                 _Invoice = new Invoice
                 {
                     Id = _Invoice != null ? _Invoice.Id : 0,
-                    Code = Code,
+                    Code = Code ?? string.Empty,
                     InvoiceDate = InvoiceDate != null ? InvoiceDate.Value : DateTime.Now,
-                    Discount = decimal.Parse(Discount),
-                    EmployeeId = Employee.Id,
-                    CustomerId = _CustomerService.CashDeskCustomer.Id,
+                    Discount = decimal.Parse(Discount ?? string.Empty),
+                    EmployeeId = Employee != null ? Employee.Id : 0,
+                    CustomerId = _CustomerService.CashDeskCustomer != null ? _CustomerService.CashDeskCustomer.Id : 0,
                     InvoiceItems = GetInvoiceItems(InvoiceItemViewModels)
                 };
 
@@ -113,15 +120,15 @@ namespace Inventory.Core.ViewModels
 
         private void Ok()
         {
-            _InvoiceService.Save(Invoice);
-            _InvoiceStore.UpdateInvoice(this);
-            _NavigationService.Close();
+            _InvoiceService?.Save(Invoice);
+            _InvoiceStore?.UpdateInvoice(this);
+            _ModalNavigationService?.Close();
         }
 
         private void Cancel()
         {
-            _InvoiceStore.UpdateInvoice(this);
-            _NavigationService.Close();
+            _InvoiceStore?.UpdateInvoice(this);
+            _ModalNavigationService.Close();
         }
 
         private void AddProduct()
@@ -149,7 +156,7 @@ namespace Inventory.Core.ViewModels
                 RemovedInvoiceItems.Add(invoiceItemViewModel);
         }
 
-        private ObservableCollection<InvoiceItemViewModel> SetInvoiceItemViewModels(IEnumerable<InvoiceItem> invoiceItems)
+        private ObservableCollection<InvoiceItemViewModel> SetInvoiceItemViewModels(IEnumerable<InvoiceItem>? invoiceItems)
         {
             ObservableCollection<InvoiceItemViewModel> invoiceItemViewModels = new ObservableCollection<InvoiceItemViewModel>();
             
@@ -167,7 +174,7 @@ namespace Inventory.Core.ViewModels
                         Quantity = item.Quantity.ToString(),
                         Price = price.ToString()
                     });
-                    TotalPrice = TotalPrice + price;
+                    TotalPrice += price;
                 }
             }
 
@@ -212,7 +219,7 @@ namespace Inventory.Core.ViewModels
             {
                 InvoiceItemViewModels = SetInvoiceItemViewModels(await _InvoiceService.LoadInvoiceItems(_Invoice.Id));
 
-                _NavigationService.Navigate(() => this);
+                _ModalNavigationService.Navigate(() => this);
             }
         }
 

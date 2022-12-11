@@ -1,15 +1,13 @@
 ﻿using Inventory.EntityFramework.DataModels;
 using Microsoft.EntityFrameworkCore;
 using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace Inventory.EntityFramework
 {
-    public class UnitOfWork : IUnitOfWork, IDisposable
+    public class UnitOfWork : IUnitOfWork
     {
         private InventoryDbContext _DbContext;
         private Repository<Brand> _BrandRepository;
@@ -23,9 +21,9 @@ namespace Inventory.EntityFramework
 
         private bool _Disposed = false;
 
-        public UnitOfWork()
+        public UnitOfWork(InventoryDbContext dbContext)
         {
-            _DbContext = new InventoryDbContext();
+            _DbContext = dbContext;
         }
 
         public Repository<Brand> BrandRepository

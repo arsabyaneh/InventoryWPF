@@ -3,38 +3,37 @@ using Inventory.EntityFramework.DataModels;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Input;
 
 namespace Inventory.Core.ViewModels
 {
     public class EmployeeViewModel : BaseViewModel
     {
-        private readonly INavigationService _NavigationService;
+        private readonly IModalNavigationService _ModalNavigationService;
         private readonly IAuthenticationService _AuthenticationService;
         private readonly IEmployeeService _EmployeeService;
 
-        private string _Code;
-        private string _FirstName;
-        private string _LastName;
+        private string? _Code;
+        private string? _FirstName;
+        private string? _LastName;
         private int _Gender;
         private DateTime? _BirthDate;
         private DateTime? _StartDate;
         private DateTime? _EndDate;
-        private string _Email;
-        private string _Telephone;
-        private string _Address;
-        private string _Username;
+        private string? _Email;
+        private string? _Telephone;
+        private string? _Address;
+        private string? _Username;
         private string _Password;
         private string _ConfirmPassword;
-        private Role _Role;
+        private Role? _Role;
 
         private Employee _Employee;
 
-        public EmployeeViewModel(INavigationService navigationService, IAuthenticationService authenticationService, IEmployeeService employeeService)
+        public EmployeeViewModel(IModalNavigationService modalNavigationService,
+            IAuthenticationService authenticationService, IEmployeeService employeeService)
         {
-            _NavigationService = navigationService;
+            _ModalNavigationService = modalNavigationService;
             _EmployeeService = employeeService;
             _AuthenticationService = authenticationService;
 
@@ -44,20 +43,20 @@ namespace Inventory.Core.ViewModels
             CancelCommand = new RelayCommand(Cancel);
         }
 
-        public string Code { get => _Code; set => SetProperty(ref _Code, value); }
-        public string FirstName { get => _FirstName; set => SetProperty(ref _FirstName, value); }
-        public string LastName { get => _LastName; set => SetProperty(ref _LastName, value); }
+        public string? Code { get => _Code; set => SetProperty(ref _Code, value); }
+        public string? FirstName { get => _FirstName; set => SetProperty(ref _FirstName, value); }
+        public string? LastName { get => _LastName; set => SetProperty(ref _LastName, value); }
         public int Gender { get => _Gender; set => SetProperty(ref _Gender, value); }
         public DateTime? BirthDate { get => _BirthDate; set => SetProperty(ref _BirthDate, value); }
         public DateTime? StartDate { get => _StartDate; set => SetProperty(ref _StartDate, value); }
         public DateTime? EndDate { get => _EndDate; set => SetProperty(ref _EndDate, value); }
-        public string Email { get => _Email; set => SetProperty(ref _Email, value); }
-        public string Telephone { get => _Telephone; set => SetProperty(ref _Telephone, value); }
-        public string Address { get => _Address; set => SetProperty(ref _Address, value); }
-        public string Username { get => _Username; set => SetProperty(ref _Username, value); }
+        public string? Email { get => _Email; set => SetProperty(ref _Email, value); }
+        public string? Telephone { get => _Telephone; set => SetProperty(ref _Telephone, value); }
+        public string? Address { get => _Address; set => SetProperty(ref _Address, value); }
+        public string? Username { get => _Username; set => SetProperty(ref _Username, value); }
         public string Password { get => _Password; set => SetProperty(ref _Password, value); }
         public string ConfirmPassword { get => _ConfirmPassword; set => SetProperty(ref _ConfirmPassword, value); }
-        public Role Role { get => _Role; set => SetProperty(ref _Role, value); }
+        public Role? Role { get => _Role; set => SetProperty(ref _Role, value); }
 
         public List<Role> Roles { get; set; }
 
@@ -71,19 +70,19 @@ namespace Inventory.Core.ViewModels
                 _Employee = new Employee
                 {
                     Id = _Employee != null ? _Employee.Id : 0,
-                    Code = Code,
-                    FirstName = FirstName,
-                    LastName = LastName,
+                    Code = Code ?? string.Empty,
+                    FirstName = FirstName ?? string.Empty,
+                    LastName = LastName ?? string.Empty,
                     Gender = Gender == 0 ? false : true,
-                    BirthDate = BirthDate.Value,
-                    StartDate = StartDate.Value,
+                    BirthDate = BirthDate != null ? BirthDate.Value : DateTime.UtcNow,
+                    StartDate = StartDate != null ? StartDate.Value : DateTime.UtcNow,
                     EndDate = EndDate,
-                    Email = Email,
-                    Telephone = Telephone,
-                    Address = Address,
+                    Email = Email ?? string.Empty,
+                    Telephone = Telephone ?? string.Empty,
+                    Address = Address ?? string.Empty,
                     IsActive = EndDate == null ? true : false,
-                    RoleId = Role.Id,
-                    Username = Username
+                    RoleId = Role != null ? Role.Id : 0,
+                    Username = Username ?? string.Empty
                 };
 
                 return _Employee;
@@ -111,12 +110,12 @@ namespace Inventory.Core.ViewModels
         private void Ok()
         {
             _AuthenticationService.Register(Employee, Password, ConfirmPassword);
-            _NavigationService.Close();
+            _ModalNavigationService.Close();
         }
 
         private void Cancel()
         {
-            _NavigationService.Close();
+            _ModalNavigationService.Close();
         }
     }
 }

@@ -1,11 +1,8 @@
-﻿using Inventory.Core.Services;
+﻿using Inventory.Core.Factories;
+using Inventory.Core.Services;
 using Inventory.Core.Stores;
-using Inventory.EntityFramework.DataModels;
+using Inventory.Core.ViewModels.Base;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Input;
 
 namespace Inventory.Core.ViewModels
@@ -13,7 +10,7 @@ namespace Inventory.Core.ViewModels
     public class HomeViewModel : BaseViewModel
     {
         private readonly INavigationService _NavigationService;
-        private readonly INavigationService _ModalNavigationService;
+        private readonly IModalNavigationService _ModalNavigationService;
         private readonly IAuthenticationService _AuthenticationService;
         private readonly IProductService _ProductService;
         private readonly IEmployeeService _EmployeeService;
@@ -24,10 +21,13 @@ namespace Inventory.Core.ViewModels
         private readonly Func<InvoiceStore> _CreateInvoiceStore;
         private readonly Func<InvoiceItemStore> _CreateInvoiceItemStore;
         private readonly Func<PriceStore> _CreatePriceStore;
+        private readonly IViewModelFactory _ViewModelFactory;
 
-        public HomeViewModel(INavigationService navigationService, INavigationService modalNavigationService, IAuthenticationService authenticationService, IProductService productService, 
-            IEmployeeService employeeService, ICustomerService customerService, IInvoiceService invoiceService, 
-            AccountStore accountStore, Func<ProductStore> createProductStore, Func<InvoiceStore> createInvoiceStore, Func<InvoiceItemStore> createInvoiceItemStore, Func<PriceStore> createPriceStore)
+        public HomeViewModel(INavigationService navigationService, IModalNavigationService modalNavigationService, IAuthenticationService authenticationService, 
+            IProductService productService, IEmployeeService employeeService, ICustomerService customerService, IInvoiceService invoiceService, 
+            AccountStore accountStore, Func<ProductStore> createProductStore, Func<InvoiceStore> createInvoiceStore, 
+            Func<InvoiceItemStore> createInvoiceItemStore, Func<PriceStore> createPriceStore,
+            IViewModelFactory viewModelFactory)
         {
             _NavigationService = navigationService;
             _ModalNavigationService = modalNavigationService;
@@ -41,8 +41,9 @@ namespace Inventory.Core.ViewModels
             _CreateInvoiceStore = createInvoiceStore;
             _CreateInvoiceItemStore = createInvoiceItemStore;
             _CreatePriceStore = createPriceStore;
+            _ViewModelFactory = viewModelFactory;
 
-            ViewModelType = ViewModelType.Home;
+            ViewModelType = ViewType.Home;
 
             AddProductCommand = new RelayCommand(AddProduct);
             AddEmployeeCommand = new RelayCommand(AddEmployee);
@@ -63,52 +64,67 @@ namespace Inventory.Core.ViewModels
 
         private void AddProduct()
         {
-            _ModalNavigationService.Navigate(() => new ProductViewModel(_ModalNavigationService, _ProductService, _CreateProductStore(), _CreatePriceStore(), null)
+            if (_ViewModelFactory.CreateViewModel(ViewType.Product) is ProductViewModel productViewModel)
             {
-                ControlWidth = 700
-            });
+                productViewModel.Initialise(_CreateProductStore(), Microsoft.EntityFrameworkCore.EntityState.Added, null);
+                productViewModel.ControlWidth = 700;
+                _ModalNavigationService.Navigate(() => productViewModel);
+            }
         }
 
         private void AddEmployee()
         {
-            _ModalNavigationService.Navigate(() => new EmployeeViewModel(_ModalNavigationService, _AuthenticationService, _EmployeeService) 
+            if (_ViewModelFactory.CreateViewModel(ViewType.Employee) is EmployeeViewModel employeeViewModel)
             {
-                ControlWidth = 500
-            });
+                employeeViewModel.ControlWidth = 500;
+                _ModalNavigationService.Navigate(() => employeeViewModel);
+            }
         }
 
         private void AddRole()
         {
-            _ModalNavigationService.Navigate(() => new RoleViewModel(_ModalNavigationService, _EmployeeService)
+            if (_ViewModelFactory.CreateViewModel(ViewType.Role) is RoleViewModel roleViewModel)
             {
-                ControlWidth = 500
-            });
+                roleViewModel.ControlWidth = 500;
+                _ModalNavigationService.Navigate(() => roleViewModel);
+            }
         }
 
         private void AddCustomer()
         {
-            _ModalNavigationService.Navigate(() => new CustomerViewModel(_ModalNavigationService, _CustomerService)
+            if (_ViewModelFactory.CreateViewModel(ViewType.Customer) is CustomerViewModel customerViewModel)
             {
-                ControlWidth = 500
-            });
+                customerViewModel.ControlWidth = 500;
+                _ModalNavigationService.Navigate(() => customerViewModel);
+            }
         }
 
         private void AddInvoice()
         {
-            _ModalNavigationService.Navigate(() => new InvoiceViewModel(_ModalNavigationService, _InvoiceService, _ProductService, _CustomerService, _AccountStore, _CreateInvoiceStore(), _CreateInvoiceItemStore(), null)
+            if (_ViewModelFactory.CreateViewModel(ViewType.Invoice) is InvoiceViewModel invoiceViewModel)
             {
-                ControlWidth = 700
-            });
+                invoiceViewModel.Initialise(_CreateInvoiceStore(), Microsoft.EntityFrameworkCore.EntityState.Added, null);
+                invoiceViewModel.ControlWidth = 700;
+                _ModalNavigationService.Navigate(() => invoiceViewModel);
+            }
         }
 
         private void ViewProducts()
         {
-            _NavigationService.Navigate(() => new ProductsListViewModel(_NavigationService, _ModalNavigationService, _ProductService, _CreateProductStore, _CreatePriceStore));
+            if (_ViewModelFactory.CreateViewModel(ViewType.ProductsList) is ProductsListViewModel productsListViewModel)
+            {
+                productsListViewModel.ControlWidth = 500;
+                _NavigationService.Navigate(() => productsListViewModel);
+            }
         }
 
         private void ViewInvoices()
         {
-            _NavigationService.Navigate(() => new InvoicesListViewModel(_NavigationService, _ModalNavigationService, _InvoiceService, _ProductService, _CustomerService, _AccountStore, _CreateInvoiceStore(), _CreateInvoiceItemStore));
+            if (_ViewModelFactory.CreateViewModel(ViewType.InvoicesList) is InvoicesListViewModel invoicesListViewModel)
+            {
+                invoicesListViewModel.ControlWidth = 500;
+                _NavigationService.Navigate(() => invoicesListViewModel);
+            }
         }
     }
 }

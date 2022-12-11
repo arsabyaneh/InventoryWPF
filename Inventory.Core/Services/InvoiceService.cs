@@ -5,16 +5,27 @@ using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace Inventory.Core.Services
 {
     public class InvoiceService : IInvoiceService
     {
-        public void Save(Invoice invoice)
+        private readonly Func<IUnitOfWork> _CreateUnitOfWork;
+
+        public InvoiceService(Func<IUnitOfWork> createUnitOfWork)
         {
-            using (UnitOfWork uow = new UnitOfWork())
+            _CreateUnitOfWork = createUnitOfWork ?? throw new ArgumentNullException(nameof(createUnitOfWork));
+        }
+
+        public void Save(Invoice? invoice)
+        {
+            if (invoice == null)
+            {
+                return;
+            }
+
+            using (IUnitOfWork uow = _CreateUnitOfWork())
             {
                 uow.InvoiceRepository.Update(invoice);
 
@@ -34,7 +45,7 @@ namespace Inventory.Core.Services
 
             try
             {
-                using (UnitOfWork uow = new UnitOfWork())
+                using (IUnitOfWork uow = _CreateUnitOfWork())
                 {
                     uow.InvoiceItemRepository.Delete(invoiceItems);
                     uow.InvoiceRepository.Delete(invoiceId);
@@ -49,7 +60,7 @@ namespace Inventory.Core.Services
 
         public long GetTotalNumberOfInvoiceRecordsInDatabase()
         {
-            using (UnitOfWork uow = new UnitOfWork())
+            using (IUnitOfWork uow = _CreateUnitOfWork())
             {
                 return uow.InvoiceRepository.GetDbSet().LongCount();
             }
@@ -59,7 +70,7 @@ namespace Inventory.Core.Services
         {
             IEnumerable<Invoice> invoices;
 
-            using (UnitOfWork uow = new UnitOfWork())
+            using (IUnitOfWork uow = _CreateUnitOfWork())
             {
                 var query = uow.InvoiceRepository.GetDbSet().AsQueryable();
 
@@ -81,7 +92,7 @@ namespace Inventory.Core.Services
 
         public async Task<long> GetTotalNumberOfInvoiceRecordsInDatabase(string code = null)
         {
-            using (UnitOfWork uow = new UnitOfWork())
+            using (IUnitOfWork uow = _CreateUnitOfWork())
             {
                 if (!string.IsNullOrWhiteSpace(code))
                     return uow.InvoiceRepository.GetDbSet().Where(x => x.Code == code).LongCount();
@@ -94,7 +105,7 @@ namespace Inventory.Core.Services
         {
             IEnumerable<Invoice> invoices;
 
-            using (UnitOfWork uow = new UnitOfWork())
+            using (IUnitOfWork uow = _CreateUnitOfWork())
             {
                 var query = uow.InvoiceRepository.GetDbSet().AsQueryable();
 
@@ -123,7 +134,7 @@ namespace Inventory.Core.Services
 
         public async Task<IEnumerable<InvoiceItem>> LoadInvoiceItems(long invoiceId)
         {
-            using (UnitOfWork uow = new UnitOfWork())
+            using (IUnitOfWork uow = _CreateUnitOfWork())
             {
                 return uow.InvoiceItemRepository.GetDbSet()
                     .Include(x => x.Product).Where(x => x.InvoiceId == invoiceId)

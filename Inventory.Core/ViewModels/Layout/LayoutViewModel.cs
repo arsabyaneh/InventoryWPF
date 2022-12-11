@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Inventory.Core.ViewModels.Base;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -12,7 +13,7 @@ namespace Inventory.Core.ViewModels
         {
             NavigationBarViewModel = navigationBarViewModel;
             ContentViewModel = contentViewModel;
-            IsNavigationBarVisible = contentViewModel.ViewModelType != ViewModelType.Login;
+            IsNavigationBarVisible = contentViewModel.ViewModelType != ViewType.Login;
         }
 
         public NavigationBarViewModel NavigationBarViewModel { get; }

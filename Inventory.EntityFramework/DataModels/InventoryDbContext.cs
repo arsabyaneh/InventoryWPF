@@ -1,13 +1,10 @@
 using Microsoft.EntityFrameworkCore;
-using System;
-using System.ComponentModel.DataAnnotations.Schema;
-using System.Linq;
 
 namespace Inventory.EntityFramework.DataModels
 {
     public partial class InventoryDbContext : DbContext
     {
-        public InventoryDbContext()
+        public InventoryDbContext(DbContextOptions<InventoryDbContext> options) : base(options)
         {
         }
 
@@ -19,11 +16,6 @@ namespace Inventory.EntityFramework.DataModels
         public virtual DbSet<Price> Prices { get; set; }
         public virtual DbSet<Product> Products { get; set; }
         public virtual DbSet<Role> Roles { get; set; }
-
-        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-        {
-            optionsBuilder.UseSqlServer(@"data source=DESKTOP-QQKLD1I;initial catalog=Inventory;user id=sa;password=12345;MultipleActiveResultSets=True");
-        }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {

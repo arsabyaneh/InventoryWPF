@@ -9,7 +9,7 @@ namespace Inventory.Core.Services
 {
     public interface ICustomerService
     {
-        Customer CashDeskCustomer { get; }
+        Customer? CashDeskCustomer { get; }
 
         void Save(Customer customer);
     }
